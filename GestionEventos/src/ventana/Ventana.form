@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ventana.Ventana">
+  <grid id="27dc6" binding="panel1" default-binding="true" layout-manager="FormLayout">
+    <rowspec value="center:max(d;4px):noGrow"/>
+    <rowspec value="top:8dlu:noGrow"/>
+    <rowspec value="center:47px:noGrow"/>
+    <rowspec value="top:20dlu:noGrow"/>
+    <rowspec value="center:9px:grow(0.2)"/>
+    <rowspec value="top:4dlu:noGrow"/>
+    <rowspec value="center:9px:grow(0.2)"/>
+    <rowspec value="center:max(d;4px):noGrow"/>
+    <rowspec value="top:16dlu:noGrow"/>
+    <rowspec value="top:d:noGrow"/>
+    <rowspec value="center:max(d;4px):noGrow"/>
+    <rowspec value="center:1px:grow(1.5)"/>
+    <rowspec value="center:max(d;4px):noGrow"/>
+    <rowspec value="top:d:noGrow"/>
+    <rowspec value="top:18dlu:noGrow"/>
+    <rowspec value="center:max(d;4px):noGrow"/>
+    <rowspec value="fill:102px:noGrow"/>
+    <rowspec value="center:max(d;4px):noGrow"/>
+    <rowspec value="center:p:grow(0.5)"/>
+    <rowspec value="top:4dlu:noGrow"/>
+    <rowspec value="top:22dlu:noGrow"/>
+    <rowspec value="center:max(d;4px):noGrow"/>
+    <rowspec value="center:d:grow"/>
+    <colspec value="left:d:noGrow"/>
+    <colspec value="left:min(p;30px):grow(0.5)"/>
+    <colspec value="fill:d:grow(0.19999999999999998)"/>
+    <colspec value="fill:d:noGrow"/>
+    <colspec value="fill:p:grow(0.19999999999999998)"/>
+    <colspec value="left:4dlu:noGrow"/>
+    <colspec value="fill:p:grow(0.19999999999999998)"/>
+    <colspec value="left:4dlu:noGrow"/>
+    <colspec value="fill:d:noGrow"/>
+    <colspec value="left:d:noGrow"/>
+    <colspec value="fill:d:grow(0.19999999999999998)"/>
+    <colspec value="fill:p:grow"/>
+    <colspec value="fill:max(d;4px):noGrow"/>
+    <colspec value="left:d:noGrow"/>
+    <colspec value="fill:p:grow"/>
+    <colspec value="left:d:noGrow"/>
+    <colspec value="fill:d:noGrow"/>
+    <colspec value="left:4dlu:noGrow"/>
+    <colspec value="left:max(m;1px):grow"/>
+    <colspec value="left:4dlu:noGrow"/>
+    <colspec value="fill:d:grow"/>
+    <colspec value="left:4dlu:noGrow"/>
+    <colspec value="fill:max(d;4px):noGrow"/>
+    <colspec value="fill:max(d;4px):noGrow"/>
+    <colspec value="left:max(p;21px):grow"/>
+    <colspec value="left:4dlu:noGrow"/>
+    <colspec value="fill:max(d;4px):noGrow"/>
+    <colspec value="left:p:noGrow"/>
+    <colspec value="left:d:noGrow"/>
+    <constraints>
+      <xy x="41" y="19" width="2309" height="1005"/>
+    </constraints>
+    <properties>
+      <background color="-770"/>
+      <maximumSize width="2147483647" height="2147483647"/>
+      <minimumSize width="900" height="1000"/>
+      <preferredSize width="1500" height="780"/>
+      <requestFocusEnabled value="true"/>
+      <visible value="true"/>
+    </properties>
+    <border type="none"/>
+    <children>
+      <component id="66a67" class="javax.swing.JComboBox" binding="cbTrabajador">
+        <constraints>
+          <grid row="4" column="4" row-span="1" col-span="3" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+          <forms/>
+        </constraints>
+        <properties>
+          <model/>
+        </properties>
+      </component>
+      <component id="790a3" class="javax.swing.JComboBox" binding="cbTarea">
+        <constraints>
+          <grid row="6" column="4" row-span="1" col-span="3" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+          <forms defaultalign-vert="false"/>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="440db" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <forms/>
+        </constraints>
+        <properties>
+          <text value="Trabajador:"/>
+        </properties>
+      </component>
+      <component id="1fb50" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <forms/>
+        </constraints>
+        <properties>
+          <text value="Tarea:"/>
+        </properties>
+      </component>
+      <component id="a322b" class="com.toedter.calendar.JCalendar" binding="jc_calendario">
+        <constraints>
+          <grid row="9" column="2" row-span="4" col-span="5" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <forms defaultalign-horz="false" defaultalign-vert="false"/>
+        </constraints>
+      </component>
+      <component id="84d95" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="2" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <forms/>
+        </constraints>
+        <properties>
+          <icon value="images/calendar-figure3.png"/>
+          <minimumSize width="50" height="169"/>
+          <text value=""/>
+        </properties>
+      </component>
+      <scrollpane id="84ab3">
+        <constraints>
+          <grid row="16" column="2" row-span="3" col-span="5" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <forms defaultalign-horz="false" defaultalign-vert="false"/>
+        </constraints>
+        <properties>
+          <autoscrolls value="false"/>
+        </properties>
+        <border type="none"/>
+        <children>
+          <component id="3fdc1" class="javax.swing.JList" binding="listaEventos">
+            <constraints/>
+            <properties/>
+          </component>
+        </children>
+      </scrollpane>
+      <component id="d7f9c" class="javax.swing.JButton" binding="btInsertarEv">
+        <constraints>
+          <grid row="13" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <forms/>
+        </constraints>
+        <properties>
+          <text value="Insertar"/>
+        </properties>
+      </component>
+      <tabbedpane id="244a9" binding="tabbedPane1" default-binding="true">
+        <constraints>
+          <grid row="6" column="11" row-span="13" col-span="12" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="200" height="200"/>
+          </grid>
+          <forms defaultalign-horz="false"/>
+        </constraints>
+        <properties>
+          <opaque value="false"/>
+        </properties>
+        <border type="none"/>
+        <children/>
+      </tabbedpane>
+      <component id="4dd99" class="javax.swing.JButton" binding="btVerTodos">
+        <constraints>
+          <grid row="13" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <forms/>
+        </constraints>
+        <properties>
+          <text value="Ver todos"/>
+        </properties>
+      </component>
+      <component id="49aaf" class="javax.swing.JButton" binding="ib_trabajador">
+        <constraints>
+          <grid row="4" column="8" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <forms/>
+        </constraints>
+        <properties>
+          <autoscrolls value="false"/>
+          <borderPainted value="false"/>
+          <contentAreaFilled value="false"/>
+          <defaultCapable value="true"/>
+          <focusPainted value="false"/>
+          <foreground color="-2883805"/>
+          <icon value="images/refresh-icon.png"/>
+          <inheritsPopupMenu value="false"/>
+          <preferredSize width="45" height="35"/>
+          <pressedIcon value="images/refresh-icon2.png"/>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="7db93" class="javax.swing.JButton" binding="ib_tarea">
+        <constraints>
+          <grid row="6" column="8" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <forms/>
+        </constraints>
+        <properties>
+          <autoscrolls value="false"/>
+          <borderPainted value="false"/>
+          <contentAreaFilled value="false"/>
+          <defaultCapable value="true"/>
+          <focusPainted value="false"/>
+          <foreground color="-2883805"/>
+          <icon value="images/refresh-icon.png"/>
+          <inheritsPopupMenu value="false"/>
+          <preferredSize width="45" height="35"/>
+          <pressedIcon value="images/refresh-icon2.png"/>
+          <text value=""/>
+        </properties>
+      </component>
+      <vspacer id="b5d38">
+        <constraints>
+          <grid row="5" column="4" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+          <forms defaultalign-vert="false"/>
+        </constraints>
+      </vspacer>
+      <component id="58f37" class="javax.swing.JComboBox" binding="comboBox3" default-binding="true">
+        <constraints>
+          <grid row="20" column="18" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <forms defaultalign-horz="false" defaultalign-vert="false"/>
+        </constraints>
+        <properties>
+          <model>
+            <item value="Diario"/>
+            <item value="Semanal"/>
+          </model>
+        </properties>
+      </component>
+      <component id="ff6c3" class="javax.swing.JButton" binding="btCrearInforme">
+        <constraints>
+          <grid row="20" column="20" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <forms defaultalign-horz="false" defaultalign-vert="false"/>
+        </constraints>
+        <properties>
+          <text value="Crear informe"/>
+        </properties>
+      </component>
+      <component id="1bb8e" class="javax.swing.JButton" binding="eliminarButton1" default-binding="true">
+        <constraints>
+          <grid row="13" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <forms/>
+        </constraints>
+        <properties>
+          <text value="Eliminar"/>
+        </properties>
+      </component>
+      <scrollpane id="b9ebd">
+        <constraints>
+          <grid row="2" column="18" row-span="2" col-span="3" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <forms defaultalign-horz="false" defaultalign-vert="false"/>
+        </constraints>
+        <properties>
+          <autoscrolls value="true"/>
+        </properties>
+        <border type="none"/>
+        <children>
+          <component id="cb48a" class="javax.swing.JList" binding="listaVacaciones">
+            <constraints/>
+            <properties>
+              <background color="-458881"/>
+              <model/>
+            </properties>
+          </component>
+        </children>
+      </scrollpane>
+      <component id="79c79" class="javax.swing.JTextField" binding="tfBuscarEv">
+        <constraints>
+          <grid row="20" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+          <forms defaultalign-horz="false" defaultalign-vert="false"/>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="7173" class="javax.swing.JButton" binding="btBuscar">
+        <constraints>
+          <grid row="20" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <forms defaultalign-horz="false" defaultalign-vert="false"/>
+        </constraints>
+        <properties>
+          <text value="Buscar"/>
+        </properties>
+      </component>
+      <component id="e461b" class="javax.swing.JButton" default-binding="true">
+        <constraints>
+          <grid row="2" column="22" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <forms defaultalign-horz="false"/>
+        </constraints>
+        <properties>
+          <background color="-458881"/>
+          <text value="Eliminar"/>
+        </properties>
+      </component>
+      <component id="c3db1" class="javax.swing.JButton" binding="btNuevaVacaciones">
+        <constraints>
+          <grid row="3" column="22" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <forms defaultalign-horz="false"/>
+        </constraints>
+        <properties>
+          <background color="-458881"/>
+          <text value="Nueva   "/>
+        </properties>
+      </component>
+      <component id="5b3ab" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="2" column="11" row-span="1" col-span="5" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <forms defaultalign-horz="false"/>
+        </constraints>
+        <properties>
+          <icon value="images/bar-chart-graphic-stats-icon.png"/>
+          <text value=""/>
+        </properties>
+      </component>
+    </children>
+  </grid>
+</form>
