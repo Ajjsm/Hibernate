@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportGestionDiario2" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1c73efbe-f84d-4d1f-a6ec-5f74485316d2">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportGestionDiario2" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="774" leftMargin="34" rightMargin="34" topMargin="34" bottomMargin="34" uuid="1c73efbe-f84d-4d1f-a6ec-5f74485316d2">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -84,7 +84,7 @@ ORDER BY fecha]]>
 	<summary>
 		<band height="82" splitType="Stretch">
 			<crosstab>
-				<reportElement x="0" y="0" width="802" height="82" uuid="60bebf1e-f89d-48cd-99e4-9b24264d9611"/>
+				<reportElement x="0" y="10" width="774" height="72" uuid="60bebf1e-f89d-48cd-99e4-9b24264d9611"/>
 				<crosstabHeaderCell>
 					<cellContents/>
 				</crosstabHeaderCell>
@@ -135,7 +135,7 @@ ORDER BY fecha]]>
 				<measure name="tareas_abreviaturaMeasure" class="java.lang.String">
 					<measureExpression><![CDATA[$F{tareas_abreviatura}]]></measureExpression>
 				</measure>
-				<crosstabCell width="46" height="14">
+				<crosstabCell width="44" height="14">
 					<cellContents>
 						<box>
 							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
