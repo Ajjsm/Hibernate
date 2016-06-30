@@ -24,7 +24,7 @@ public class RellenarVacaciones {
         JFrame frame = new JFrame("RellenarVacaciones");
         frame.setContentPane(panel1);
         frame.pack();
-        frame.setTitle("Agregar nuevo trabajador");
+        frame.setTitle("Agregar nuevo dia festivo");
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 

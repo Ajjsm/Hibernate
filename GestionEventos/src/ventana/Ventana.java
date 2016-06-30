@@ -252,13 +252,10 @@ public class Ventana {
         tabbedPane1.removeAll();
         Connection conexion = null;
         try {
-            InputStream is = ClassLoader.getSystemResourceAsStream("reportGestion.jasper");
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestiontrabajadores2", "root", "");
-            File fichero = new File("reportGestion.jasper");
             JasperReport report = (JasperReport)
                     JRLoader.loadObject(this.getClass().getClassLoader() .getResourceAsStream(dato));
-
             JasperPrint jasperPrint;
             jasperPrint = JasperFillManager.fillReport(report,
                     map(jc_calendario.getDate()), conexion);
@@ -384,10 +381,12 @@ public class Ventana {
             } else if (cbInformeCant.getSelectedItem().toString().equalsIgnoreCase("semanal")) {
                 parametros.put("fechaParam", startDate);
                 parametros.put("fechaFinal", endDate);
-            } else if (cbInformeCant.getSelectedItem().toString().equalsIgnoreCase("mensual")) {
-                parametros.put("mesInicio", diaMesinicio);
-                parametros.put("mesFinal", diaMesfinal);
+            } else if (cbInformeCant.getSelectedItem().toString().equalsIgnoreCase("Mensual")) {
+                parametros.put("inicioMes", diaMesinicio);
+                parametros.put("finMes", diaMesfinal);
 
+                System.out.println(diaMesfinal);
+                System.out.println(diaMesinicio);
 
             }
 

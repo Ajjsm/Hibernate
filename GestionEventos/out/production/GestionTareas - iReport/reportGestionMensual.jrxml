@@ -14,7 +14,10 @@
 		</conditionalStyle>
 	</style>
 	<style name="Crosstab Data Text" hAlign="Center"/>
-	<parameter name="fechaParam" class="java.util.Date">
+	<parameter name="inicioMes" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="finMes" class="java.util.Date">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
@@ -28,13 +31,17 @@
      trabajadores.`id` AS trabajadores_id,
      trabajadores.`nombre` AS trabajadores_nombre,
      trabajadores.`correo` AS trabajadores_correo,
-     trabajadores.`id_tarea` AS trabajadores_id_tarea
+     trabajadores.`id_tarea` AS trabajadores_id_tarea,
+     tareas.`abreviatura` AS tareas_abreviatura
 FROM
      `trabajadores` trabajadores INNER JOIN `evento` evento ON trabajadores.`id` = evento.`id_trabajador`
-     INNER JOIN `tareas` tareas ON evento.`id_tarea` = tareas.`id`]]>
+     INNER JOIN `tareas` tareas ON evento.`id_tarea` = tareas.`id`
+WHERE
+     fecha BETWEEN $P{inicioMes} and $P{finMes}
+ORDER BY fecha]]>
 	</queryString>
 	<field name="evento_id" class="java.lang.Integer"/>
-	<field name="evento_fecha" class="java.sql.Date"/>
+	<field name="evento_fecha" class="java.util.Date"/>
 	<field name="evento_id_tarea" class="java.lang.Integer"/>
 	<field name="evento_id_trabajador" class="java.lang.Integer"/>
 	<field name="tareas_id" class="java.lang.Long"/>
@@ -43,6 +50,7 @@ FROM
 	<field name="trabajadores_nombre" class="java.lang.String"/>
 	<field name="trabajadores_correo" class="java.lang.String"/>
 	<field name="trabajadores_id_tarea" class="java.lang.Integer"/>
+	<field name="tareas_abreviatura" class="java.lang.String"/>
 	<group name="evento_fecha">
 		<groupExpression><![CDATA[$F{evento_fecha}]]></groupExpression>
 		<groupHeader>
@@ -76,19 +84,22 @@ FROM
 	<summary>
 		<band height="82" splitType="Stretch">
 			<crosstab>
-				<reportElement x="0" y="0" width="820" height="82" uuid="9a6a6348-f776-4579-bdbe-e5e94e5c2498"/>
+				<reportElement x="0" y="0" width="802" height="82" uuid="60bebf1e-f89d-48cd-99e4-9b24264d9611"/>
+				<crosstabHeaderCell>
+					<cellContents/>
+				</crosstabHeaderCell>
 				<rowGroup name="trabajadores_nombre" width="61">
 					<bucket class="java.lang.String">
 						<bucketExpression><![CDATA[$F{trabajadores_nombre}]]></bucketExpression>
 					</bucket>
 					<crosstabRowHeader>
-						<cellContents backcolor="#BFFFBF" mode="Opaque">
+						<cellContents backcolor="#FFFFBF" mode="Opaque">
 							<box>
 								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 							</box>
-							<textField>
-								<reportElement style="Crosstab Data Text" x="0" y="5" width="52" height="20" uuid="f03b9669-14c4-4f9c-9682-f1518a8f27e6"/>
-								<textElement>
+							<textField isStretchWithOverflow="true">
+								<reportElement style="Crosstab Data Text" x="3" y="2" width="57" height="11" uuid="9b0cdb1d-0364-45d0-836c-64d875133473"/>
+								<textElement markup="styled">
 									<font size="8"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$V{trabajadores_nombre}]]></textFieldExpression>
@@ -99,18 +110,18 @@ FROM
 						<cellContents/>
 					</crosstabTotalRowHeader>
 				</rowGroup>
-				<columnGroup name="evento_fecha" height="23">
+				<columnGroup name="evento_fecha" height="13">
 					<bucket class="java.sql.Date">
 						<bucketExpression><![CDATA[$F{evento_fecha}]]></bucketExpression>
 					</bucket>
 					<crosstabColumnHeader>
-						<cellContents backcolor="#BFFFBF" mode="Opaque">
+						<cellContents backcolor="#FFFFBF" mode="Opaque">
 							<box>
 								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 							</box>
-							<textField pattern="dd">
-								<reportElement style="Crosstab Data Text" x="14" y="4" width="20" height="12" uuid="c0512711-e503-4c47-9aa1-c4d19a99f5b9"/>
-								<textElement>
+							<textField isStretchWithOverflow="true" pattern="dd EEE">
+								<reportElement style="Crosstab Data Text" stretchType="RelativeToBandHeight" x="4" y="2" width="38" height="11" uuid="da65971a-4fcb-4638-9156-3cbce0046e3c"/>
+								<textElement markup="styled">
 									<font size="8"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$V{evento_fecha}]]></textFieldExpression>
@@ -121,53 +132,53 @@ FROM
 						<cellContents/>
 					</crosstabTotalColumnHeader>
 				</columnGroup>
-				<measure name="tareas_nombreMeasure" class="java.lang.String">
-					<measureExpression><![CDATA[$F{tareas_nombre}]]></measureExpression>
+				<measure name="tareas_abreviaturaMeasure" class="java.lang.String">
+					<measureExpression><![CDATA[$F{tareas_abreviatura}]]></measureExpression>
 				</measure>
-				<crosstabCell width="46" height="25">
+				<crosstabCell width="46" height="14">
 					<cellContents>
 						<box>
 							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						</box>
-						<textField isBlankWhenNull="true">
-							<reportElement style="Crosstab Data Text" x="14" y="5" width="20" height="20" uuid="3605fb6a-7174-4dcd-9276-11b84db5979a"/>
-							<textElement>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+							<reportElement style="Crosstab Data Text" stretchType="RelativeToBandHeight" x="4" y="2" width="38" height="11" uuid="8352823e-6e85-4791-b8df-f234d7fb3eb9"/>
+							<textElement markup="styled">
 								<font size="8"/>
 							</textElement>
-							<textFieldExpression><![CDATA[$V{tareas_nombreMeasure}]]></textFieldExpression>
+							<textFieldExpression><![CDATA[$V{tareas_abreviaturaMeasure}]]></textFieldExpression>
 						</textField>
 					</cellContents>
 				</crosstabCell>
 				<crosstabCell height="25" rowTotalGroup="trabajadores_nombre">
-					<cellContents backcolor="#E6FFE6" mode="Opaque">
+					<cellContents backcolor="#FFFFE6" mode="Opaque">
 						<box>
 							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						</box>
-						<textField>
-							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" uuid="66516f39-c133-443c-9888-d9910a706474"/>
-							<textFieldExpression><![CDATA[$V{tareas_nombreMeasure}]]></textFieldExpression>
+						<textField isBlankWhenNull="true">
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" uuid="add13eda-ac34-4ae6-9cc7-b4baec48ca77"/>
+							<textFieldExpression><![CDATA[$V{tareas_abreviaturaMeasure}]]></textFieldExpression>
 						</textField>
 					</cellContents>
 				</crosstabCell>
 				<crosstabCell width="50" columnTotalGroup="evento_fecha">
-					<cellContents backcolor="#E6FFE6" mode="Opaque">
+					<cellContents backcolor="#FFFFE6" mode="Opaque">
 						<box>
 							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						</box>
-						<textField>
-							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" uuid="e8372fd6-cc3d-4e3b-9742-6178787e2277"/>
-							<textFieldExpression><![CDATA[$V{tareas_nombreMeasure}]]></textFieldExpression>
+						<textField isBlankWhenNull="true">
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" uuid="7995574b-2824-4c22-b67a-88419d71a8de"/>
+							<textFieldExpression><![CDATA[$V{tareas_abreviaturaMeasure}]]></textFieldExpression>
 						</textField>
 					</cellContents>
 				</crosstabCell>
 				<crosstabCell rowTotalGroup="trabajadores_nombre" columnTotalGroup="evento_fecha">
-					<cellContents backcolor="#E6FFE6" mode="Opaque">
+					<cellContents backcolor="#FFFFE6" mode="Opaque">
 						<box>
 							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						</box>
-						<textField>
-							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" uuid="629a846d-fc0a-43f9-83f1-a0099e766131"/>
-							<textFieldExpression><![CDATA[$V{tareas_nombreMeasure}]]></textFieldExpression>
+						<textField isBlankWhenNull="true">
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" uuid="6b4fa65e-49fe-4901-886d-a42f126b450f"/>
+							<textFieldExpression><![CDATA[$V{tareas_abreviaturaMeasure}]]></textFieldExpression>
 						</textField>
 					</cellContents>
 				</crosstabCell>

@@ -22,5 +22,6 @@
     <orderEntry type="library" name="joda-time-2.9.4" level="project" />
     <orderEntry type="library" name="groovy-all-2.0.1" level="project" />
     <orderEntry type="library" name="iText-2.1.7.js2" level="project" />
+    <orderEntry type="library" name="poi-3.14-20160307" level="project" />
   </component>
 </module>

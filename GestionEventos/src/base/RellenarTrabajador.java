@@ -1,7 +1,6 @@
 package base;
 
 import hibernate.Operations;
-import ventana.Ventana;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -13,9 +12,10 @@ import java.awt.event.ActionListener;
 public class RellenarTrabajador extends JFrame{
     private JPanel panel1;
     public JButton bt_aceptar;
-    private JTextField tf_nombre;
+    private JTextField tf_nombreTrab;
     private JTextField tf_correo;
     private JButton bt_cancelar;
+    private JList list1;
     private JComboListar comboListar;
 
 
@@ -30,12 +30,25 @@ public class RellenarTrabajador extends JFrame{
         bt_aceptar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Trabajador trabajador = new Trabajador();
-                trabajador.setNombre(tf_nombre.getText());
-                trabajador.setCorreo(tf_correo.getText());
-                operations.guardarTrabajador(trabajador);
-                JOptionPane.showMessageDialog(null, "Trabajador insertado correctamente");
-                frame.setVisible(false);
+                for (Trabajador trabajadores : operations.getTrabajador()) {
+                    if (trabajadores.getNombre().equalsIgnoreCase(tf_nombreTrab.getText())) {
+                        JOptionPane.showMessageDialog(null, "Ya existe un trabajador con ese nombre");
+                        tf_nombreTrab.setText("");
+                        tf_correo.setText("");
+                        return;
+                    }
+
+                }
+                    Trabajador trabajador = new Trabajador();
+                    trabajador.setNombre(tf_nombreTrab.getText());
+                    trabajador.setCorreo(tf_correo.getText());
+                    operations.guardarTrabajador(trabajador);
+                    JOptionPane.showMessageDialog(null, "Trabajador insertado correctamente");
+                    frame.setVisible(false);
+
+                    tf_nombreTrab.setText("");
+                    tf_correo.setText("");
+
             }
         });
 

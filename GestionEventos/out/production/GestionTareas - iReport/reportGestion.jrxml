@@ -117,7 +117,7 @@ ORDER BY fecha]]>
 				<crosstabHeaderCell>
 					<cellContents/>
 				</crosstabHeaderCell>
-				<rowGroup name="trabajadores_nombre" width="47">
+				<rowGroup name="trabajadores_nombre" width="51">
 					<bucket class="java.lang.String">
 						<bucketExpression><![CDATA[$F{trabajadores_nombre}]]></bucketExpression>
 					</bucket>

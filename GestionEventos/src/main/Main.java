@@ -2,7 +2,6 @@ package main;
 
 
 import ventana.Ventana;
-import ventana.Ventana2;
 
 /**
  * Created by JuanAJ on 25/06/2016.

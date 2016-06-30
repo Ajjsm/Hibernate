@@ -69,7 +69,7 @@ public class Evento {
     @Override
     public String toString() {
 
-            return Fecha.formatFecha(fecha) + " - " + trabajador.getNombre() + " - " + tareas.getNombre();
+            return "   " + Fecha.formatFecha(fecha) + " - " + trabajador.getNombre() + " - " + tareas.getNombre();
 
     }
 }

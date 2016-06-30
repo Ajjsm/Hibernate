@@ -24,6 +24,10 @@ public class Tarea {
     @Column(name = "nombre")
     private String nombre;
 
+    @Column(name = "abreviatura")
+    private String abreviatura;
+
+
     @OneToMany(mappedBy = "tareas")
     private List<Evento> eventos;
 
@@ -52,6 +56,14 @@ public class Tarea {
 
     public void setEventos(List<Evento> eventos) {
         this.eventos = eventos;
+    }
+
+    public String getAbreviatura() {
+        return abreviatura;
+    }
+
+    public void setAbreviatura(String abreviatura) {
+        this.abreviatura = abreviatura;
     }
 
     @Override
