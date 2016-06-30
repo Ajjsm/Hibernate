@@ -9,7 +9,10 @@ import hibernate.Operations;
 import net.sf.jasperreports.engine.*;
 
 import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.engine.export.data.DateTextValue;
 import net.sf.jasperreports.engine.util.*;
+import org.joda.time.DateMidnight;
+import org.joda.time.DateTime;
 import util.Fecha;
 
 import javax.swing.*;
@@ -23,6 +26,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -57,7 +61,7 @@ public class Ventana {
     private JButton ib_trabajador;
     private JButton ib_tarea;
     private JButton btCrearInforme;
-    private JComboBox comboBox3;
+    private JComboBox cbInformeCant;
     private JScrollPane jScrollPane;
     private  net.sf.jasperreports.swing.JRViewer jRViewer;
 
@@ -124,7 +128,14 @@ public class Ventana {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                crearInforme();
+                if (cbInformeCant.getSelectedItem().toString().equalsIgnoreCase("semanal")) {
+                    crearInforme("reportGestion.jasper");
+                } else if (cbInformeCant.getSelectedItem().toString().equalsIgnoreCase("diario")) {
+                    crearInforme("reportGestionDiario2.jasper");
+                } else if (cbInformeCant.getSelectedItem().toString().equalsIgnoreCase("mensual")) {
+                    crearInforme("reportGestionMensual.jasper");
+                }
+
             }
         });
 
@@ -236,7 +247,7 @@ public class Ventana {
     }
 
 
-    private void crearInforme()  {
+    private void crearInforme(String dato)  {
 
         tabbedPane1.removeAll();
         Connection conexion = null;
@@ -246,7 +257,7 @@ public class Ventana {
             conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestiontrabajadores2", "root", "");
             File fichero = new File("reportGestion.jasper");
             JasperReport report = (JasperReport)
-                    JRLoader.loadObject(this.getClass().getClassLoader() .getResourceAsStream("reportGestion.jasper"));
+                    JRLoader.loadObject(this.getClass().getClassLoader() .getResourceAsStream(dato));
 
             JasperPrint jasperPrint;
             jasperPrint = JasperFillManager.fillReport(report,
@@ -343,14 +354,42 @@ public class Ventana {
     }
 
     private Map map(Date fecha){
-        Map<String, Date> parametros = new HashMap<>();
-        try {
-            System.out.println(Fecha.parseFecha(fecha));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        //Conseguir el primer dia y ultimo de la semana
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(jc_calendario.getDate());
+        cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
+        Date startDate = cal.getTime();
+        cal.add(Calendar.DATE, 6);
+        Date endDate = cal.getTime();
 
-            parametros.put("fechaParam", fecha);
+        //Conseguir una fecha en joda y sumarle los dias que quiera
+        org.joda.time.DateTimeZone timeZone = org.joda.time.DateTimeZone.forID( "Europe/Madrid" );
+        DateTime now = new DateTime( jc_calendario.getDate(), timeZone );
+        DateTime tomorrow = now.plusDays( 1 );
+        java.util.Date fechaFinal = tomorrow.toDate();
+
+        DateTime now2 = new DateTime(jc_calendario.getDate(), timeZone);
+        DateTime primerDiaMes = now.dayOfMonth().withMinimumValue();
+        DateTime ultimoDiaMes = now.dayOfMonth().withMaximumValue();
+
+        java.util.Date diaMesinicio = primerDiaMes.toDate();
+        java.util.Date diaMesfinal = ultimoDiaMes.toDate();
+
+
+
+        Map<String, Date> parametros = new HashMap<>();
+
+            if (cbInformeCant.getSelectedItem().toString().equalsIgnoreCase("diario")){
+                parametros.put("fechaParam", jc_calendario.getDate());
+            } else if (cbInformeCant.getSelectedItem().toString().equalsIgnoreCase("semanal")) {
+                parametros.put("fechaParam", startDate);
+                parametros.put("fechaFinal", endDate);
+            } else if (cbInformeCant.getSelectedItem().toString().equalsIgnoreCase("mensual")) {
+                parametros.put("mesInicio", diaMesinicio);
+                parametros.put("mesFinal", diaMesfinal);
+
+
+            }
 
 
         return parametros;
