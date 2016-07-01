@@ -14,8 +14,9 @@ public class RellenarTarea extends JFrame{
     private JTextField tf_nombre;
     public JButton bt_aceptar;
     private JButton bt_cancelar;
-    private JList list1;
+    private JList listTarea;
     private JTextField tfAbrev;
+    private JButton btnEliminar;
     private Operations operations;
     private JFrame frame;
 
@@ -23,6 +24,8 @@ public class RellenarTarea extends JFrame{
     public RellenarTarea() {
         operations = new Operations();
         operations.conectar();
+
+        listarTarea();
 
         bt_aceptar.addActionListener(new ActionListener() {
             @Override
@@ -34,15 +37,33 @@ public class RellenarTarea extends JFrame{
                         return;
                     }
                 }
-                        Tarea tarea = new Tarea();
-                        tarea.setNombre(tf_nombre.getText());
-                        tarea.setAbreviatura(tfAbrev.getText());
-                        operations.guardarTarea(tarea);
-                        JOptionPane.showMessageDialog(null, "Tarea insertado correctamente");
-                        frame.setVisible(false);
-
-
+                Tarea tarea = new Tarea();
+                tarea.setNombre(tf_nombre.getText());
+                tarea.setAbreviatura(tfAbrev.getText());
+                operations.guardarTarea(tarea);
+                JOptionPane.showMessageDialog(null, "Tarea insertado correctamente");
+                listarTarea();
                 tf_nombre.setText("");
+                tfAbrev.setText("");
+
+            }
+        });
+
+        btnEliminar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int n = JOptionPane.showConfirmDialog(
+                        null,
+                        "Estas apunto de eliminar una tarea",
+                        "",
+                        JOptionPane.YES_NO_OPTION);
+
+                if(n == JOptionPane.YES_OPTION){
+                    Tarea filaSeleccionada = (Tarea)listTarea.getSelectedValue();
+                    System.out.println(filaSeleccionada);
+                    operations.eliminarTarea(filaSeleccionada);
+                    listarTarea();
+                }
 
             }
         });
@@ -67,5 +88,13 @@ public class RellenarTarea extends JFrame{
         frame.setVisible(true);
     }
 
+    private void listarTarea(){
+        DefaultListModel dtmLista = new DefaultListModel();
+        listTarea.setModel(dtmLista);
+
+        for(Tarea tarea :operations.getTarea()){
+            dtmLista.addElement(tarea);
+        }
+    }
 
 }

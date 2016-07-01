@@ -2,10 +2,10 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ventana.Ventana">
   <grid id="27dc6" binding="panel1" default-binding="true" layout-manager="FormLayout">
     <rowspec value="center:max(d;4px):noGrow"/>
-    <rowspec value="top:8dlu:noGrow"/>
-    <rowspec value="center:47px:noGrow"/>
-    <rowspec value="top:20dlu:noGrow"/>
-    <rowspec value="center:8px:grow(0.1)"/>
+    <rowspec value="top:4dlu:noGrow"/>
+    <rowspec value="center:30px:noGrow"/>
+    <rowspec value="top:30px:noGrow"/>
+    <rowspec value="center:30px:noGrow"/>
     <rowspec value="top:4dlu:noGrow"/>
     <rowspec value="center:8px:grow(0.1)"/>
     <rowspec value="center:max(d;4px):noGrow"/>
@@ -40,14 +40,21 @@
     <colspec value="fill:max(d;4px):noGrow"/>
     <colspec value="left:d:noGrow"/>
     <colspec value="fill:p:noGrow"/>
-    <colspec value="left:5dlu:noGrow"/>
+    <colspec value="left:29dlu:noGrow"/>
     <colspec value="left:d:noGrow"/>
     <colspec value="fill:d:noGrow"/>
-    <colspec value="left:max(m;1px):grow"/>
+    <colspec value="left:150px:noGrow"/>
     <colspec value="left:4dlu:noGrow"/>
+    <colspec value="fill:85px:noGrow"/>
+    <colspec value="left:4dlu:noGrow"/>
+    <colspec value="fill:150px:noGrow"/>
+    <colspec value="left:4dlu:noGrow"/>
+    <colspec value="fill:85px:noGrow"/>
+    <colspec value="left:5dlu:noGrow"/>
+    <colspec value="fill:85px:noGrow"/>
     <colspec value="fill:d:grow"/>
     <colspec value="left:4dlu:noGrow"/>
-    <colspec value="fill:max(d;4px):noGrow"/>
+    <colspec value="fill:44px:noGrow"/>
     <colspec value="fill:max(d;4px):noGrow"/>
     <colspec value="left:100px:grow"/>
     <colspec value="left:4dlu:noGrow"/>
@@ -58,7 +65,7 @@
       <xy x="41" y="19" width="2309" height="1005"/>
     </constraints>
     <properties>
-      <background color="-770"/>
+      <background color="-3866692"/>
       <maximumSize width="2147483647" height="2147483647"/>
       <minimumSize width="900" height="1000"/>
       <preferredSize width="1500" height="780"/>
@@ -107,17 +114,6 @@
           <forms defaultalign-horz="false" defaultalign-vert="false"/>
         </constraints>
       </component>
-      <component id="84d95" class="javax.swing.JLabel">
-        <constraints>
-          <grid row="2" column="2" row-span="1" col-span="4" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-          <forms/>
-        </constraints>
-        <properties>
-          <icon value="images/calendar-figure3.png"/>
-          <minimumSize width="50" height="169"/>
-          <text value=""/>
-        </properties>
-      </component>
       <scrollpane id="84ab3">
         <constraints>
           <grid row="16" column="2" row-span="3" col-span="6" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -145,7 +141,7 @@
       </component>
       <tabbedpane id="244a9" binding="tabbedPane1" default-binding="true">
         <constraints>
-          <grid row="6" column="12" row-span="13" col-span="12" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+          <grid row="6" column="12" row-span="13" col-span="19" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
             <preferred-size width="200" height="200"/>
           </grid>
           <forms defaultalign-horz="false"/>
@@ -220,7 +216,7 @@
       </component>
       <scrollpane id="b9ebd">
         <constraints>
-          <grid row="2" column="19" row-span="2" col-span="3" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <grid row="2" column="19" row-span="3" col-span="10" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
           <forms defaultalign-horz="false" defaultalign-vert="false"/>
         </constraints>
         <properties>
@@ -257,36 +253,6 @@
           <text value="Buscar"/>
         </properties>
       </component>
-      <component id="e461b" class="javax.swing.JButton" default-binding="true">
-        <constraints>
-          <grid row="2" column="23" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-          <forms defaultalign-horz="false"/>
-        </constraints>
-        <properties>
-          <background color="-458881"/>
-          <text value="Eliminar"/>
-        </properties>
-      </component>
-      <component id="c3db1" class="javax.swing.JButton" binding="btNuevaVacaciones">
-        <constraints>
-          <grid row="3" column="23" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-          <forms defaultalign-horz="false"/>
-        </constraints>
-        <properties>
-          <background color="-458881"/>
-          <text value="Nueva   "/>
-        </properties>
-      </component>
-      <component id="5b3ab" class="javax.swing.JLabel">
-        <constraints>
-          <grid row="2" column="12" row-span="1" col-span="6" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-          <forms defaultalign-horz="false"/>
-        </constraints>
-        <properties>
-          <icon value="images/bar-chart-graphic-stats-icon.png"/>
-          <text value=""/>
-        </properties>
-      </component>
       <component id="58f37" class="javax.swing.JComboBox" binding="cbInformeCant">
         <constraints>
           <grid row="20" column="12" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
@@ -307,6 +273,112 @@
         </constraints>
         <properties>
           <text value="Actualizar"/>
+        </properties>
+      </component>
+      <component id="44c98" class="javax.swing.JTextField" binding="tfDesde">
+        <constraints>
+          <grid row="20" column="19" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+          <forms defaultalign-horz="false" defaultalign-vert="false"/>
+        </constraints>
+        <properties>
+          <editable value="false"/>
+        </properties>
+      </component>
+      <component id="6cfde" class="javax.swing.JTextField" binding="tfHasta">
+        <constraints>
+          <grid row="20" column="23" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+          <forms defaultalign-horz="false" defaultalign-vert="false"/>
+        </constraints>
+        <properties>
+          <editable value="false"/>
+        </properties>
+      </component>
+      <component id="a295d" class="javax.swing.JButton" binding="btHastaFecha">
+        <constraints>
+          <grid row="20" column="25" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <forms defaultalign-horz="false" defaultalign-vert="false"/>
+        </constraints>
+        <properties>
+          <text value="Hasta"/>
+        </properties>
+      </component>
+      <component id="286cd" class="javax.swing.JButton" binding="btDesdeFecha">
+        <constraints>
+          <grid row="20" column="21" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <forms defaultalign-horz="false" defaultalign-vert="false"/>
+        </constraints>
+        <properties>
+          <text value="Desde"/>
+        </properties>
+      </component>
+      <component id="71f6e" class="javax.swing.JButton" binding="btNuevaVacaciones">
+        <constraints>
+          <grid row="3" column="30" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <forms defaultalign-horz="false" defaultalign-vert="false"/>
+        </constraints>
+        <properties>
+          <font size="16" style="1"/>
+          <foreground color="-16729335"/>
+          <text value="+"/>
+        </properties>
+      </component>
+      <component id="c74ba" class="javax.swing.JButton" binding="btnEliminar">
+        <constraints>
+          <grid row="2" column="30" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <forms defaultalign-horz="false"/>
+        </constraints>
+        <properties>
+          <font size="16" style="1"/>
+          <foreground color="-4521971"/>
+          <text value="-"/>
+        </properties>
+      </component>
+      <component id="4ed8c" class="javax.swing.JButton" binding="actualizarButton" default-binding="true">
+        <constraints>
+          <grid row="3" column="16" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <forms defaultalign-horz="false"/>
+        </constraints>
+        <properties>
+          <borderPainted value="false"/>
+          <contentAreaFilled value="false"/>
+          <icon value="images/refresh-icon.png"/>
+          <pressedIcon value="images/refresh-icon2.png"/>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="9aedd" class="javax.swing.JButton" binding="btListarEventos">
+        <constraints>
+          <grid row="16" column="9" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+          <forms defaultalign-vert="false"/>
+        </constraints>
+        <properties>
+          <autoscrolls value="false"/>
+          <borderPainted value="false"/>
+          <contentAreaFilled value="false"/>
+          <defaultCapable value="true"/>
+          <focusPainted value="false"/>
+          <foreground color="-2883805"/>
+          <icon value="images/refresh-icon.png"/>
+          <inheritsPopupMenu value="false"/>
+          <preferredSize width="45" height="35"/>
+          <pressedIcon value="images/refresh-icon2.png"/>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="38ab" class="javax.swing.JButton" binding="btCrearContar">
+        <constraints>
+          <grid row="20" column="27" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <forms defaultalign-horz="false" defaultalign-vert="false"/>
+        </constraints>
+        <properties>
+          <borderPainted value="false"/>
+          <contentAreaFilled value="false"/>
+          <icon value="images/agregarVacas.png"/>
+          <text value=""/>
         </properties>
       </component>
     </children>

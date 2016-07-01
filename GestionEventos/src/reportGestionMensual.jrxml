@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportGestionDiario2" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="774" leftMargin="34" rightMargin="34" topMargin="34" bottomMargin="34" uuid="1c73efbe-f84d-4d1f-a6ec-5f74485316d2">
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true" pdfFontName="Times-Bold"/>
@@ -26,31 +26,28 @@
      evento.`fecha` AS evento_fecha,
      evento.`id_tarea` AS evento_id_tarea,
      evento.`id_trabajador` AS evento_id_trabajador,
-     tareas.`id` AS tareas_id,
+     tareas.`id_tarea` AS tareas_id_tarea,
      tareas.`nombre` AS tareas_nombre,
-     trabajadores.`id` AS trabajadores_id,
+     tareas.`abreviatura` AS tareas_abreviatura,
+     trabajadores.`id_trabajador` AS trabajadores_id_trabajador,
      trabajadores.`nombre` AS trabajadores_nombre,
-     trabajadores.`correo` AS trabajadores_correo,
-     trabajadores.`id_tarea` AS trabajadores_id_tarea,
-     tareas.`abreviatura` AS tareas_abreviatura
+     trabajadores.`correo` AS trabajadores_correo
 FROM
-     `trabajadores` trabajadores INNER JOIN `evento` evento ON trabajadores.`id` = evento.`id_trabajador`
-     INNER JOIN `tareas` tareas ON evento.`id_tarea` = tareas.`id`
-WHERE
-     fecha BETWEEN $P{inicioMes} and $P{finMes}
-ORDER BY fecha]]>
+     `tareas` tareas INNER JOIN `evento` evento ON tareas.`id_tarea` = evento.`id_tarea`
+     INNER JOIN `trabajadores` trabajadores ON evento.`id_trabajador` = trabajadores.`id_trabajador`
+
+WHERE fecha BETWEEN $P{inicioMes} and $P{finMes}]]>
 	</queryString>
 	<field name="evento_id" class="java.lang.Integer"/>
-	<field name="evento_fecha" class="java.util.Date"/>
+	<field name="evento_fecha" class="java.sql.Date"/>
 	<field name="evento_id_tarea" class="java.lang.Integer"/>
 	<field name="evento_id_trabajador" class="java.lang.Integer"/>
-	<field name="tareas_id" class="java.lang.Long"/>
+	<field name="tareas_id_tarea" class="java.lang.Integer"/>
 	<field name="tareas_nombre" class="java.lang.String"/>
-	<field name="trabajadores_id" class="java.lang.Long"/>
+	<field name="tareas_abreviatura" class="java.lang.String"/>
+	<field name="trabajadores_id_trabajador" class="java.lang.Integer"/>
 	<field name="trabajadores_nombre" class="java.lang.String"/>
 	<field name="trabajadores_correo" class="java.lang.String"/>
-	<field name="trabajadores_id_tarea" class="java.lang.Integer"/>
-	<field name="tareas_abreviatura" class="java.lang.String"/>
 	<group name="evento_fecha">
 		<groupExpression><![CDATA[$F{evento_fecha}]]></groupExpression>
 		<groupHeader>
@@ -67,7 +64,12 @@ ORDER BY fecha]]>
 		<band splitType="Stretch"/>
 	</title>
 	<pageHeader>
-		<band splitType="Stretch"/>
+		<band height="25" splitType="Stretch">
+			<textField pattern="MMMMM yyyy" isBlankWhenNull="false">
+				<reportElement x="40" y="0" width="192" height="20" uuid="e591ec3d-a869-4b93-a635-47d1eac6287d"/>
+				<textFieldExpression><![CDATA[$F{evento_fecha}]]></textFieldExpression>
+			</textField>
+		</band>
 	</pageHeader>
 	<columnHeader>
 		<band splitType="Stretch"/>
@@ -135,7 +137,7 @@ ORDER BY fecha]]>
 				<measure name="tareas_abreviaturaMeasure" class="java.lang.String">
 					<measureExpression><![CDATA[$F{tareas_abreviatura}]]></measureExpression>
 				</measure>
-				<crosstabCell width="44" height="14">
+				<crosstabCell width="44" height="18">
 					<cellContents>
 						<box>
 							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>

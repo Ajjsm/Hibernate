@@ -15,7 +15,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 public class Trabajador {
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    @Column(name="id")
+    @Column(name="id_trabajador")
     private int id;
 
     @Column(name = "correo")

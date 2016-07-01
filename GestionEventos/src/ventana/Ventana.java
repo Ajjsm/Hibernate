@@ -15,17 +15,24 @@ import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import util.Fecha;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.InputStream;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -40,7 +47,6 @@ public class Ventana {
     //FIXME Crear boton verde y rojo para saber si estas conectado
     //FIXME Pasar a los combos la seleccion de la lista de eventos
     //FIXME Añadir funciones para eliminar eventos y vacaciones
-    //FIXME Añadir lista al agregar trabajadores y tareas para poder eliminar
     //FIXME Si un evento se repite en fecha, tarea y trabajador, se actualiza, no se inserta uno nuevo
 
 
@@ -62,8 +68,22 @@ public class Ventana {
     private JButton ib_tarea;
     private JButton btCrearInforme;
     private JComboBox cbInformeCant;
+    private JTextField tfDesde;
+    private JButton btDesdeFecha;
+    private JTextField tfHasta;
+    private JButton btHastaFecha;
+    private JButton btnEliminar;
+    private JButton actualizarButton;
+    private JButton btCrearContar;
+    private JButton btListarEventos;
     private JScrollPane jScrollPane;
-    private  net.sf.jasperreports.swing.JRViewer jRViewer;
+    private net.sf.jasperreports.swing.JRViewer jRViewer;
+
+    private Date fechaDesde2;
+    private Date fechaHasta2;
+
+
+
 
     private JDayChooser jdc;
     private RellenarTrabajador rellenarTrabajador;
@@ -94,9 +114,12 @@ public class Ventana {
     private DefaultListModel dtm_listaVacaciones;
 
     public Ventana() throws InterruptedException {
+        jc_calendario.setBackground(new Color(196,255,188));
+
         JScrollPane scroll2 = new JScrollPane(panel1);
-        JFrame frame = new JFrame("Ventana");
+        JFrame frame = new JFrame();
         frame.add(scroll2);
+        frame.setIconImage(icono().getImage());
         frame.setContentPane(scroll2);
         frame.setContentPane(scroll2);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -156,7 +179,7 @@ public class Ventana {
         jdc.addPropertyChangeListener("day", new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent e) {
-                System.out.println(e.getPropertyName()+ ": " + e.getNewValue());
+                System.out.println(e.getPropertyName() + ": " + e.getNewValue());
             }
         });
 
@@ -200,11 +223,55 @@ public class Ventana {
             }
         });
 
+        btDesdeFecha.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                rellenarDesde();
+            }
+        });
+
+        btHastaFecha.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                rellenarHasta();
+            }
+        });
+
+        btCrearContar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                crearContar("reportGestionDesdeHasta.jasper");
+            }
+        });
+
+        btListarEventos.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                listaEventos();
+            }
+        });
+
+        btnEliminar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int n = JOptionPane.showConfirmDialog(
+                        null,
+                        "Estas apunto de eliminar un festivo",
+                        "",
+                        JOptionPane.YES_NO_OPTION);
+
+                if(n == JOptionPane.YES_OPTION) {
+                    Vacaciones filaSeleccionada = (Vacaciones) listaVacaciones.getSelectedValue();
+                    System.out.println(filaSeleccionada);
+                    operations.eliminarVacacion(filaSeleccionada);
+                    listaVacaciones();
+                }
+            }
+        });
     }
 
 
-
-    private JMenuBar getMenuBar(){
+    private JMenuBar getMenuBar() {
         menuBar = new JMenuBar();
         menu = new JMenu("Menu");
         menuBar.add(menu);
@@ -247,26 +314,26 @@ public class Ventana {
     }
 
 
-    private void crearInforme(String dato)  {
+    private void crearInforme(String dato) {
 
         tabbedPane1.removeAll();
         Connection conexion = null;
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-            conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestiontrabajadores2", "root", "");
+            conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestiontrabajadores3", "root", "");
             JasperReport report = (JasperReport)
-                    JRLoader.loadObject(this.getClass().getClassLoader() .getResourceAsStream(dato));
+                    JRLoader.loadObject(this.getClass().getClassLoader().getResourceAsStream(dato));
             JasperPrint jasperPrint;
             jasperPrint = JasperFillManager.fillReport(report,
                     map(jc_calendario.getDate()), conexion);
 
-        JRExporter exporter = new JRPdfExporter();
-        exporter.setParameter(JRExporterParameter.JASPER_PRINT,
-                jasperPrint);
-        exporter.setParameter(JRExporterParameter.OUTPUT_FILE, new
-                File("backupInforme.pdf"));
-        exporter.exportReport();
-           jRViewer = new net.sf.jasperreports.swing.JRViewer(jasperPrint);
+            JRExporter exporter = new JRPdfExporter();
+            exporter.setParameter(JRExporterParameter.JASPER_PRINT,
+                    jasperPrint);
+            exporter.setParameter(JRExporterParameter.OUTPUT_FILE, new
+                    File("backupInforme.pdf"));
+            exporter.exportReport();
+            jRViewer = new net.sf.jasperreports.swing.JRViewer(jasperPrint);
             tabbedPane1.addTab("Informe", jRViewer);
 
         } catch (JRException e) {
@@ -283,11 +350,48 @@ public class Ventana {
 
     }
 
-    private void insertarEvento(){
+    private void crearContar(String dato){
+        tabbedPane1.removeAll();
+        Connection conexion = null;
+        try {
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestiontrabajadores3", "root", "");
+            JasperReport report = (JasperReport)
+                    JRLoader.loadObject(this.getClass().getClassLoader().getResourceAsStream(dato));
+            JasperPrint jasperPrint;
+            jasperPrint = JasperFillManager.fillReport(report,
+                    map2(), conexion);
+
+            JRExporter exporter = new JRPdfExporter();
+            exporter.setParameter(JRExporterParameter.JASPER_PRINT,
+                    jasperPrint);
+            exporter.setParameter(JRExporterParameter.OUTPUT_FILE, new
+                    File("backupInforme2.pdf"));
+            exporter.exportReport();
+            jRViewer = new net.sf.jasperreports.swing.JRViewer(jasperPrint);
+            tabbedPane1.addTab("Informe", jRViewer);
+
+            System.out.println(fechaDesde2);
+            System.out.println(fechaHasta2);
+
+        } catch (JRException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e1) {
+            e1.printStackTrace();
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+        } catch (InstantiationException e1) {
+            e1.printStackTrace();
+        } catch (IllegalAccessException e1) {
+            e1.printStackTrace();
+        }
+    }
+
+    private void insertarEvento() {
         evento = new Evento();
         Date fecha = jc_calendario.getDate();
 
-        tarea = (Tarea)cbTarea.getSelectedItem();
+        tarea = (Tarea) cbTarea.getSelectedItem();
         trabajador = (Trabajador) cbTrabajador.getSelectedItem();
 
         evento.setTareas(tarea);
@@ -301,21 +405,21 @@ public class Ventana {
 
     }
 
-    private void listaEventos(){
+    private void listaEventos() {
         dtm_listaEventos = new DefaultListModel();
         listaEventos.setModel(dtm_listaEventos);
         dtm_listaEventos.removeAllElements();
         operations.getEvento().forEach(dtm_listaEventos::addElement);
     }
 
-    private void listaVacaciones(){
+    private void listaVacaciones() {
         dtm_listaVacaciones = new DefaultListModel();
         listaVacaciones.setModel(dtm_listaVacaciones);
         dtm_listaVacaciones.removeAllElements();
         operations.getVacaciones().forEach(dtm_listaVacaciones::addElement);
     }
 
-    private void listarTodo(){
+    private void listarTodo() {
         JComboListar jComboListar = new JComboListar(cbTrabajador);
         jComboListar.listarTrabajadores(cbTrabajador);
         jComboListar.listarTarea(cbTarea);
@@ -324,33 +428,34 @@ public class Ventana {
         listaVacaciones();
     }
 
-    private void listarSegunFecha(Date fecha){
+    private void listarSegunFecha(Date fecha) {
         dtm_listaEventos = new DefaultListModel();
         listaEventos.setModel(dtm_listaEventos);
         operations.getEvento().stream().filter(eventos -> Fecha.formatFecha(eventos.getFecha()).equalsIgnoreCase(Fecha.formatFecha(fecha))).forEach(dtm_listaEventos::addElement);
     }
 
-    private void buscarEvento(String valor){
+    private void buscarEvento(String valor) {
 
         dtm_listaEventos = new DefaultListModel();
         listaEventos.setModel(dtm_listaEventos);
-        for (Evento eventos : operations.getEvento()){
-            if (valor.equalsIgnoreCase(eventos.getTrabajador().getNombre())){
+        for (Evento eventos : operations.getEvento()) {
+            if (valor.equalsIgnoreCase(eventos.getTrabajador().getNombre())) {
                 dtm_listaEventos.addElement(eventos);
             }
-            if (valor.equalsIgnoreCase(eventos.getTareas().getNombre())){
+            if (valor.equalsIgnoreCase(eventos.getTareas().getNombre())) {
                 dtm_listaEventos.addElement(eventos);
             }
 
-            if (valor.equalsIgnoreCase("")){
+            if (valor.equalsIgnoreCase("")) {
                 listarTodo();
+                break;
             }
 
         }
 
     }
 
-    private Map map(Date fecha){
+    private Map map(Date fecha) {
         //Conseguir el primer dia y ultimo de la semana
         Calendar cal = Calendar.getInstance();
         cal.setTime(jc_calendario.getDate());
@@ -360,9 +465,9 @@ public class Ventana {
         Date endDate = cal.getTime();
 
         //Conseguir una fecha en joda y sumarle los dias que quiera
-        org.joda.time.DateTimeZone timeZone = org.joda.time.DateTimeZone.forID( "Europe/Madrid" );
-        DateTime now = new DateTime( jc_calendario.getDate(), timeZone );
-        DateTime tomorrow = now.plusDays( 1 );
+        org.joda.time.DateTimeZone timeZone = org.joda.time.DateTimeZone.forID("Europe/Madrid");
+        DateTime now = new DateTime(jc_calendario.getDate(), timeZone);
+        DateTime tomorrow = now.plusDays(1);
         java.util.Date fechaFinal = tomorrow.toDate();
 
         DateTime now2 = new DateTime(jc_calendario.getDate(), timeZone);
@@ -373,25 +478,59 @@ public class Ventana {
         java.util.Date diaMesfinal = ultimoDiaMes.toDate();
 
 
-
         Map<String, Date> parametros = new HashMap<>();
 
-            if (cbInformeCant.getSelectedItem().toString().equalsIgnoreCase("diario")){
-                parametros.put("fechaParam", jc_calendario.getDate());
-            } else if (cbInformeCant.getSelectedItem().toString().equalsIgnoreCase("semanal")) {
-                parametros.put("fechaParam", startDate);
-                parametros.put("fechaFinal", endDate);
-            } else if (cbInformeCant.getSelectedItem().toString().equalsIgnoreCase("Mensual")) {
-                parametros.put("inicioMes", diaMesinicio);
-                parametros.put("finMes", diaMesfinal);
+        if (cbInformeCant.getSelectedItem().toString().equalsIgnoreCase("diario")) {
+            parametros.put("fechaParam", jc_calendario.getDate());
+        } else if (cbInformeCant.getSelectedItem().toString().equalsIgnoreCase("semanal")) {
+            parametros.put("fechaParam", startDate);
+            parametros.put("fechaFinal", endDate);
+        } else if (cbInformeCant.getSelectedItem().toString().equalsIgnoreCase("mensual")) {
+            parametros.put("inicioMes", diaMesinicio);
+            parametros.put("finMes", diaMesfinal);
 
-                System.out.println(diaMesfinal);
-                System.out.println(diaMesinicio);
-
-            }
-
+        }
 
         return parametros;
     }
 
+    private void rellenarDesde() {
+        tfDesde.setText(Fecha.formatFecha(jc_calendario.getDate()));
+        String fecha = Fecha.formatFecha(jc_calendario.getDate());
+
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        try {
+            fechaDesde2 = df.parse(fecha);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void rellenarHasta() {
+        tfHasta.setText(Fecha.formatFecha(jc_calendario.getDate()));
+        String fecha = Fecha.formatFecha(jc_calendario.getDate());
+
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        try {
+            fechaHasta2 = df.parse(fecha);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private Map map2() {
+        Map<String, Date> parametros = new HashMap<>();
+        parametros.put("fechaInicio", fechaDesde2);
+        parametros.put("fechaFinal", fechaHasta2);
+        return parametros;
+    }
+
+    private ImageIcon icono(){
+        URL iconURL = getClass().getResource("/images/banana-icon.png");
+// iconURL is null when not found
+        ImageIcon icon = new ImageIcon(iconURL);
+     return icon;
+    }
 }

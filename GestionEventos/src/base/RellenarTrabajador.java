@@ -16,6 +16,7 @@ public class RellenarTrabajador extends JFrame{
     private JTextField tf_correo;
     private JButton bt_cancelar;
     private JList list1;
+    private JButton btEliminar;
     private JComboListar comboListar;
 
 
@@ -26,6 +27,8 @@ public class RellenarTrabajador extends JFrame{
     public RellenarTrabajador(){
         operations = new Operations();
         operations.conectar();
+
+        listarTrabajador();
 
         bt_aceptar.addActionListener(new ActionListener() {
             @Override
@@ -44,18 +47,36 @@ public class RellenarTrabajador extends JFrame{
                     trabajador.setCorreo(tf_correo.getText());
                     operations.guardarTrabajador(trabajador);
                     JOptionPane.showMessageDialog(null, "Trabajador insertado correctamente");
-                    frame.setVisible(false);
 
                     tf_nombreTrab.setText("");
                     tf_correo.setText("");
 
+                    listarTrabajador();
+
+            }
+        });
+
+        btEliminar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int n = JOptionPane.showConfirmDialog(
+                        null,
+                        "Estas apunto de eliminar un trabajador",
+                        "",
+                        JOptionPane.YES_NO_OPTION);
+
+                if(n == JOptionPane.YES_OPTION) {
+                    Trabajador filaSeleccionada = (Trabajador) list1.getSelectedValue();
+                    System.out.println(filaSeleccionada);
+                    operations.eliminarTrabajador(filaSeleccionada);
+                    listarTrabajador();
+                }
             }
         });
 
         bt_cancelar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 frame.setVisible(false);
             }
         });
@@ -72,6 +93,15 @@ public class RellenarTrabajador extends JFrame{
 
     public void visible(){
         frame.setVisible(true);
+    }
+
+    private void listarTrabajador(){
+        DefaultListModel dtmLista = new DefaultListModel();
+        list1.setModel(dtmLista);
+
+        for(Trabajador trabajador :operations.getTrabajador()){
+            dtmLista.addElement(trabajador);
+        }
     }
 
 }

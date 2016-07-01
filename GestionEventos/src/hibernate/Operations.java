@@ -49,14 +49,6 @@ public class Operations {
         sesion.close();
     }
 
-    public void modificarEvento(Evento evento){
-        Session sesion = Util.getCurrentSession();
-        sesion.beginTransaction();
-        sesion.update(evento);
-        sesion.getTransaction().commit();
-        sesion.close();
-    }
-
     public void guardarTarea(Tarea tarea) {
         Session sesion = Util.getCurrentSession();
         sesion.beginTransaction();
@@ -64,6 +56,31 @@ public class Operations {
         sesion.getTransaction().commit();
         sesion.close();
     }
+
+    public void eliminarTrabajador(Trabajador trabajador){
+        Session sesion = Util.getCurrentSession();
+        sesion.beginTransaction();
+        sesion.delete(trabajador);
+        sesion.getTransaction().commit();
+        sesion.close();
+    }
+
+    public void eliminarTarea(Tarea tarea){
+        Session sesion = Util.getCurrentSession();
+        sesion.beginTransaction();
+        sesion.delete(tarea);
+        sesion.getTransaction().commit();
+        sesion.close();
+    }
+
+    public void eliminarVacacion(Vacaciones vacaciones){
+        Session sesion = Util.getCurrentSession();
+        sesion.beginTransaction();
+        sesion.delete(vacaciones);
+        sesion.getTransaction().commit();
+        sesion.close();
+    }
+
 
     public ArrayList<Trabajador> getTrabajador() {
         Query query = Util.getCurrentSession().

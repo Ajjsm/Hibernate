@@ -17,10 +17,11 @@ public class RellenarVacaciones {
     private JButton bt_aceptar;
     private JButton bt_cancelar;
     private JPanel panel1;
+    private JButton btnEliminar;
 
     private Operations operations;
 
-    public RellenarVacaciones(){
+    public RellenarVacaciones() {
         JFrame frame = new JFrame("RellenarVacaciones");
         frame.setContentPane(panel1);
         frame.pack();
@@ -50,6 +51,7 @@ public class RellenarVacaciones {
                 frame.setVisible(false);
             }
         });
+
     }
 
 }

@@ -18,7 +18,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 public class Tarea {
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    @Column(name="id")
+    @Column(name="id_tarea")
     private int id;
 
     @Column(name = "nombre")

@@ -26,30 +26,30 @@
      evento.`fecha` AS evento_fecha,
      evento.`id_tarea` AS evento_id_tarea,
      evento.`id_trabajador` AS evento_id_trabajador,
-     tareas.`id` AS tareas_id,
-     tareas.`nombre` AS tareas_nombre,
-     trabajadores.`id` AS trabajadores_id,
+     trabajadores.`id_trabajador` AS trabajadores_id_trabajador,
      trabajadores.`nombre` AS trabajadores_nombre,
      trabajadores.`correo` AS trabajadores_correo,
-     trabajadores.`id_tarea` AS trabajadores_id_tarea
+     tareas.`id_tarea` AS tareas_id_tarea,
+     tareas.`nombre` AS tareas_nombre,
+     tareas.`abreviatura` AS tareas_abreviatura
 FROM
-     `tareas` tareas INNER JOIN `evento` evento ON tareas.`id` = evento.`id_tarea`
-     INNER JOIN `trabajadores` trabajadores ON evento.`id_trabajador` = trabajadores.`id`
+     `trabajadores` trabajadores INNER JOIN `evento` evento ON trabajadores.`id_trabajador` = evento.`id_trabajador`
+     INNER JOIN `tareas` tareas ON evento.`id_tarea` = tareas.`id_tarea`
 WHERE
-     fecha between $P{fechaParam} and $P{fechaFinal}
-
-ORDER BY fecha]]>
+     fecha BETWEEN $P{fechaParam} and $P{fechaFinal}
+ORDER BY
+     fecha ASC]]>
 	</queryString>
 	<field name="evento_id" class="java.lang.Integer"/>
 	<field name="evento_fecha" class="java.sql.Date"/>
 	<field name="evento_id_tarea" class="java.lang.Integer"/>
 	<field name="evento_id_trabajador" class="java.lang.Integer"/>
-	<field name="tareas_id" class="java.lang.Long"/>
-	<field name="tareas_nombre" class="java.lang.String"/>
-	<field name="trabajadores_id" class="java.lang.Long"/>
+	<field name="trabajadores_id_trabajador" class="java.lang.Integer"/>
 	<field name="trabajadores_nombre" class="java.lang.String"/>
 	<field name="trabajadores_correo" class="java.lang.String"/>
-	<field name="trabajadores_id_tarea" class="java.lang.Integer"/>
+	<field name="tareas_id_tarea" class="java.lang.Integer"/>
+	<field name="tareas_nombre" class="java.lang.String"/>
+	<field name="tareas_abreviatura" class="java.lang.String"/>
 	<group name="evento_fecha" isStartNewColumn="true">
 		<groupExpression><![CDATA[$F{evento_fecha}]]></groupExpression>
 		<groupHeader>

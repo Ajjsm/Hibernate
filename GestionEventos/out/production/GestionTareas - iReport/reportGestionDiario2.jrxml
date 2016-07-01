@@ -22,29 +22,28 @@
      evento.`fecha` AS evento_fecha,
      evento.`id_tarea` AS evento_id_tarea,
      evento.`id_trabajador` AS evento_id_trabajador,
-     tareas.`id` AS tareas_id,
+     tareas.`id_tarea` AS tareas_id_tarea,
      tareas.`nombre` AS tareas_nombre,
-     trabajadores.`id` AS trabajadores_id,
+     tareas.`abreviatura` AS tareas_abreviatura,
+     trabajadores.`id_trabajador` AS trabajadores_id_trabajador,
      trabajadores.`nombre` AS trabajadores_nombre,
-     trabajadores.`correo` AS trabajadores_correo,
-     trabajadores.`id_tarea` AS trabajadores_id_tarea
+     trabajadores.`correo` AS trabajadores_correo
 FROM
-     `trabajadores` trabajadores INNER JOIN `evento` evento ON trabajadores.`id` = evento.`id_trabajador`
-     INNER JOIN `tareas` tareas ON evento.`id_tarea` = tareas.`id`
-
+     `tareas` tareas INNER JOIN `evento` evento ON tareas.`id_tarea` = evento.`id_tarea`
+     INNER JOIN `trabajadores` trabajadores ON evento.`id_trabajador` = trabajadores.`id_trabajador`
 WHERE
-fecha = $P{fechaParam}]]>
+     fecha = $P{fechaParam}]]>
 	</queryString>
 	<field name="evento_id" class="java.lang.Integer"/>
 	<field name="evento_fecha" class="java.sql.Date"/>
 	<field name="evento_id_tarea" class="java.lang.Integer"/>
 	<field name="evento_id_trabajador" class="java.lang.Integer"/>
-	<field name="tareas_id" class="java.lang.Long"/>
+	<field name="tareas_id_tarea" class="java.lang.Integer"/>
 	<field name="tareas_nombre" class="java.lang.String"/>
-	<field name="trabajadores_id" class="java.lang.Long"/>
+	<field name="tareas_abreviatura" class="java.lang.String"/>
+	<field name="trabajadores_id_trabajador" class="java.lang.Integer"/>
 	<field name="trabajadores_nombre" class="java.lang.String"/>
 	<field name="trabajadores_correo" class="java.lang.String"/>
-	<field name="trabajadores_id_tarea" class="java.lang.Integer"/>
 	<group name="evento_fecha">
 		<groupExpression><![CDATA[$F{evento_fecha}]]></groupExpression>
 		<groupHeader>
