@@ -81,6 +81,13 @@ public class Operations {
         sesion.close();
     }
 
+    public void eliminarEvento(Evento evento){
+        Session sesion = Util.getCurrentSession();
+        sesion.beginTransaction();
+        sesion.delete(evento);
+        sesion.getTransaction().commit();
+        sesion.close();
+    }
 
     public ArrayList<Trabajador> getTrabajador() {
         Query query = Util.getCurrentSession().

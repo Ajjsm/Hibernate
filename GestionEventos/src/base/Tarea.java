@@ -68,7 +68,7 @@ public class Tarea {
 
     @Override
     public String toString() {
-        return nombre;
+        return nombre + " - " + abreviatura;
     }
 }
 

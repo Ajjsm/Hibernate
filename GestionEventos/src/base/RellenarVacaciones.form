@@ -64,7 +64,7 @@
           <forms/>
         </constraints>
         <properties>
-          <text value="Cancelar"/>
+          <text value="Salir"/>
         </properties>
       </component>
     </children>

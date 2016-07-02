@@ -30,6 +30,10 @@ public class RellenarTarea extends JFrame{
         bt_aceptar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if ((tf_nombre.getText().equalsIgnoreCase("")) && (tfAbrev.getText().equalsIgnoreCase(""))){
+                    JOptionPane.showMessageDialog(null, "No dejes los campos en blanco");
+                    return;
+                }
                 for (Tarea tareas : operations.getTarea()) {
                     if (tareas.getNombre().equalsIgnoreCase(tf_nombre.getText())) {
                         JOptionPane.showMessageDialog(null, "Ya existe una tarea con ese nombre");
@@ -60,9 +64,13 @@ public class RellenarTarea extends JFrame{
 
                 if(n == JOptionPane.YES_OPTION){
                     Tarea filaSeleccionada = (Tarea)listTarea.getSelectedValue();
-                    System.out.println(filaSeleccionada);
-                    operations.eliminarTarea(filaSeleccionada);
-                    listarTarea();
+                    if (filaSeleccionada!=null){
+                        operations.eliminarTarea(filaSeleccionada);
+                        listarTarea();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "No tienes ningun dato seleccionado");
+                    }
+
                 }
 
             }

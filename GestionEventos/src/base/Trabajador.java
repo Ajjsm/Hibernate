@@ -59,7 +59,7 @@ public class Trabajador {
 
     @Override
     public String toString() {
-        return nombre;
+        return nombre + " - " + correo;
     }
 
 

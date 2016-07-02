@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportGestionDiario2" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="774" leftMargin="34" rightMargin="34" topMargin="34" bottomMargin="34" uuid="1c73efbe-f84d-4d1f-a6ec-5f74485316d2">
-	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true" pdfFontName="Times-Bold"/>
@@ -35,8 +35,11 @@
 FROM
      `tareas` tareas INNER JOIN `evento` evento ON tareas.`id_tarea` = evento.`id_tarea`
      INNER JOIN `trabajadores` trabajadores ON evento.`id_trabajador` = trabajadores.`id_trabajador`
+WHERE
+     fecha BETWEEN $P{inicioMes} and $P{finMes}
 
-WHERE fecha BETWEEN $P{inicioMes} and $P{finMes}]]>
+ORDER BY
+     fecha ASC]]>
 	</queryString>
 	<field name="evento_id" class="java.lang.Integer"/>
 	<field name="evento_fecha" class="java.sql.Date"/>
@@ -64,12 +67,7 @@ WHERE fecha BETWEEN $P{inicioMes} and $P{finMes}]]>
 		<band splitType="Stretch"/>
 	</title>
 	<pageHeader>
-		<band height="25" splitType="Stretch">
-			<textField pattern="MMMMM yyyy" isBlankWhenNull="false">
-				<reportElement x="40" y="0" width="192" height="20" uuid="e591ec3d-a869-4b93-a635-47d1eac6287d"/>
-				<textFieldExpression><![CDATA[$F{evento_fecha}]]></textFieldExpression>
-			</textField>
-		</band>
+		<band splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
 		<band splitType="Stretch"/>
@@ -137,7 +135,7 @@ WHERE fecha BETWEEN $P{inicioMes} and $P{finMes}]]>
 				<measure name="tareas_abreviaturaMeasure" class="java.lang.String">
 					<measureExpression><![CDATA[$F{tareas_abreviatura}]]></measureExpression>
 				</measure>
-				<crosstabCell width="44" height="18">
+				<crosstabCell width="44" height="14">
 					<cellContents>
 						<box>
 							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>

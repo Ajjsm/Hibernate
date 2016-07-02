@@ -33,6 +33,10 @@ public class RellenarTrabajador extends JFrame{
         bt_aceptar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if ((tf_nombreTrab.getText().equalsIgnoreCase("")) && (tf_correo.getText().equalsIgnoreCase(""))){
+                    JOptionPane.showMessageDialog(null, "No dejes los campos en blanco");
+                    return;
+                }
                 for (Trabajador trabajadores : operations.getTrabajador()) {
                     if (trabajadores.getNombre().equalsIgnoreCase(tf_nombreTrab.getText())) {
                         JOptionPane.showMessageDialog(null, "Ya existe un trabajador con ese nombre");
@@ -67,9 +71,13 @@ public class RellenarTrabajador extends JFrame{
 
                 if(n == JOptionPane.YES_OPTION) {
                     Trabajador filaSeleccionada = (Trabajador) list1.getSelectedValue();
-                    System.out.println(filaSeleccionada);
-                    operations.eliminarTrabajador(filaSeleccionada);
-                    listarTrabajador();
+                    if (filaSeleccionada!=null){
+                        operations.eliminarTrabajador(filaSeleccionada);
+                        listarTrabajador();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "No tienes ningun dato seleccionado");
+                    }
+
                 }
             }
         });

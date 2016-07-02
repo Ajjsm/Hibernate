@@ -35,6 +35,10 @@ public class RellenarVacaciones {
         bt_aceptar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if ((tf_descripcion.getText().equalsIgnoreCase(""))){
+                    JOptionPane.showMessageDialog(null, "No dejes los campos en blanco");
+                    return;
+                }
                 Date fecha = jc_vacaciones.getDate();
                 Vacaciones vacaciones = new Vacaciones();
                 vacaciones.setDescripcion(tf_descripcion.getText());

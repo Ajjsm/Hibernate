@@ -6,6 +6,7 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDayChooser;
 import hibernate.Operations;
+import hibernate.Util;
 import net.sf.jasperreports.engine.*;
 
 import net.sf.jasperreports.engine.export.JRPdfExporter;
@@ -58,7 +59,7 @@ public class Ventana {
     private JList listaEventos;
     private JTextField tfBuscarEv;
     private JButton btBuscar;
-    private JButton eliminarButton1;
+    private JButton btnEliminarEv;
     private JButton btInsertarEv;
     private JTabbedPane tabbedPane1;
     private JCalendar jc_calendario;
@@ -72,8 +73,8 @@ public class Ventana {
     private JButton btDesdeFecha;
     private JTextField tfHasta;
     private JButton btHastaFecha;
-    private JButton btnEliminar;
-    private JButton actualizarButton;
+    private JButton btnEliminarVac;
+    private JButton btnActualizarVacas;
     private JButton btCrearContar;
     private JButton btListarEventos;
     private JScrollPane jScrollPane;
@@ -81,9 +82,6 @@ public class Ventana {
 
     private Date fechaDesde2;
     private Date fechaHasta2;
-
-
-
 
     private JDayChooser jdc;
     private RellenarTrabajador rellenarTrabajador;
@@ -114,13 +112,12 @@ public class Ventana {
     private DefaultListModel dtm_listaVacaciones;
 
     public Ventana() throws InterruptedException {
-        jc_calendario.setBackground(new Color(196,255,188));
+        jc_calendario.setBackground(new Color(196, 255, 188));
 
         JScrollPane scroll2 = new JScrollPane(panel1);
         JFrame frame = new JFrame();
         frame.add(scroll2);
-        frame.setIconImage(icono().getImage());
-        frame.setContentPane(scroll2);
+
         frame.setContentPane(scroll2);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -142,19 +139,24 @@ public class Ventana {
         listarTodo();
 
         frame.setJMenuBar(getMenuBar());
+        frame.setIconImage(icono().getImage());
         frame.setVisible(true);
 
-
-        frame.setVisible(true);
+        btnActualizarVacas.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                listaVacaciones();
+            }
+        });
 
         btCrearInforme.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
                 if (cbInformeCant.getSelectedItem().toString().equalsIgnoreCase("semanal")) {
-                    crearInforme("reportGestion.jasper");
+                    crearInforme("reportGestionSemanal.jasper");
                 } else if (cbInformeCant.getSelectedItem().toString().equalsIgnoreCase("diario")) {
-                    crearInforme("reportGestionDiario2.jasper");
+                    crearInforme("reportGestionDiario.jasper");
                 } else if (cbInformeCant.getSelectedItem().toString().equalsIgnoreCase("mensual")) {
                     crearInforme("reportGestionMensual.jasper");
                 }
@@ -168,6 +170,7 @@ public class Ventana {
                 RellenarVacaciones rellenarVacaciones = new RellenarVacaciones();
             }
         });
+
         btInsertarEv.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -175,18 +178,9 @@ public class Ventana {
             }
         });
 
-        jdc = new JDayChooser();
-        jdc.addPropertyChangeListener("day", new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent e) {
-                System.out.println(e.getPropertyName() + ": " + e.getNewValue());
-            }
-        });
-
         jc_calendario.addPropertyChangeListener("calendar", new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
-                System.out.println(jc_calendario.getDate());
                 listarSegunFecha(jc_calendario.getDate());
             }
         });
@@ -251,7 +245,7 @@ public class Ventana {
             }
         });
 
-        btnEliminar.addActionListener(new ActionListener() {
+        btnEliminarVac.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int n = JOptionPane.showConfirmDialog(
@@ -262,9 +256,34 @@ public class Ventana {
 
                 if(n == JOptionPane.YES_OPTION) {
                     Vacaciones filaSeleccionada = (Vacaciones) listaVacaciones.getSelectedValue();
-                    System.out.println(filaSeleccionada);
-                    operations.eliminarVacacion(filaSeleccionada);
-                    listaVacaciones();
+                    if (filaSeleccionada!=null){
+                        operations.eliminarVacacion(filaSeleccionada);
+                        listaVacaciones();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "No tienes ningun dato seleccionado");
+                    }
+
+                }
+            }
+        });
+        btnEliminarEv.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int n = JOptionPane.showConfirmDialog(
+                        null,
+                        "Estas apunto de eliminar el evento?",
+                        "",
+                        JOptionPane.YES_NO_OPTION);
+
+                if(n == JOptionPane.YES_OPTION) {
+                    Evento filaSeleccionada = (Evento) listaEventos.getSelectedValue();
+                    if(filaSeleccionada!=null){
+                        operations.eliminarEvento(filaSeleccionada);
+                        listaEventos();
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(null, "No tienes ningun dato seleccionado");
+                    }
                 }
             }
         });
@@ -275,7 +294,7 @@ public class Ventana {
         menuBar = new JMenuBar();
         menu = new JMenu("Menu");
         menuBar.add(menu);
-        menuItemAddTrabajador = new JMenuItem("Agregar trabajador");
+        menuItemAddTrabajador = new JMenuItem("Trabajadores");
         menuItemAddTrabajador.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -285,7 +304,7 @@ public class Ventana {
 
             }
         });
-        menuItemAddTarea = new JMenuItem("Agregar tarea");
+        menuItemAddTarea = new JMenuItem("Tareas");
         menuItemAddTarea.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -307,6 +326,12 @@ public class Ventana {
         menuBar.add(menuAyuda);
         menuItemInstrucciones = new JMenuItem("Instrucciones");
         menuItemVersion = new JMenuItem("Ver version");
+        menuItemVersion.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null, "Version del programa 1.0.0");
+            }
+        });
         menuAyuda.add(menuItemVersion);
         menuAyuda.add(menuItemInstrucciones);
 
@@ -371,9 +396,6 @@ public class Ventana {
             jRViewer = new net.sf.jasperreports.swing.JRViewer(jasperPrint);
             tabbedPane1.addTab("Informe", jRViewer);
 
-            System.out.println(fechaDesde2);
-            System.out.println(fechaHasta2);
-
         } catch (JRException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e1) {
@@ -394,6 +416,15 @@ public class Ventana {
         tarea = (Tarea) cbTarea.getSelectedItem();
         trabajador = (Trabajador) cbTrabajador.getSelectedItem();
 
+        for (Evento eventos : operations.getEvento()){
+
+            if (trabajador.getId() == eventos.getTrabajador().getId() && (Fecha.formatFecha(fecha)).equalsIgnoreCase(Fecha.formatFecha(eventos.getFecha()))){
+                System.out.println("Comparar esta fecha " + Fecha.formatFecha(fecha));
+                System.out.println(" con esta " + Fecha.formatFecha(eventos.getFecha()));
+                JOptionPane.showMessageDialog(null, "Este trabajador ya tiene esta fecha asignada");
+                return;
+            }
+        }
         evento.setTareas(tarea);
         evento.setTrabajador(trabajador);
         evento.setFecha(fecha);
@@ -529,8 +560,9 @@ public class Ventana {
 
     private ImageIcon icono(){
         URL iconURL = getClass().getResource("/images/banana-icon.png");
-// iconURL is null when not found
         ImageIcon icon = new ImageIcon(iconURL);
      return icon;
     }
 }
+
+

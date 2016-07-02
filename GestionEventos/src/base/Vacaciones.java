@@ -53,6 +53,6 @@ public class Vacaciones {
 
     @Override
     public String toString() {
-        return "   " + descripcion + " - " + Fecha.formatFecha(fecha);
+        return "   " + Fecha.formatFecha(fecha) + " - " + descripcion;
     }
 }

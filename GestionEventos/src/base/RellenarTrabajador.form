@@ -74,7 +74,7 @@
           <forms/>
         </constraints>
         <properties>
-          <text value="Cancelar"/>
+          <text value="Salir"/>
         </properties>
       </component>
       <component id="fc2b0" class="javax.swing.JTextField" binding="tf_correo">

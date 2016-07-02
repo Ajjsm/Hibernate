@@ -11,7 +11,7 @@ import org.hibernate.service.ServiceRegistryBuilder;
  */
 public class Util {
     private static SessionFactory sessionFactory;
-    private static Session session;
+    public static Session session;
 
     public static void buildSessionFactory() {
 
@@ -43,4 +43,5 @@ public class Util {
         if (sessionFactory != null)
             sessionFactory.close();
     }
+
 }
