@@ -25,8 +25,7 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.File;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -34,10 +33,7 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -100,6 +96,14 @@ public class Ventana {
     private JMenuItem menuItemVersion;
 
     private Operations operations;
+
+    //Datos base de datos
+    private String base;
+    private String usuario;
+    private String password;
+    private String puerto;
+    private String servidor;
+
 
     private Trabajador trabajador;
     private Tarea tarea;
@@ -234,7 +238,9 @@ public class Ventana {
         btCrearContar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                crearContar("reportGestionDesdeHasta.jasper");
+                crearContar("pruebaasta.jasper");
+                System.out.println("Primera fecha - "+fechaDesde2);
+                System.out.println("Hasta fecha - "+fechaHasta2);
             }
         });
 
@@ -287,6 +293,8 @@ public class Ventana {
                 }
             }
         });
+
+       propiedades();
     }
 
 
@@ -340,12 +348,11 @@ public class Ventana {
 
 
     private void crearInforme(String dato) {
-
         tabbedPane1.removeAll();
         Connection conexion = null;
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-            conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestiontrabajadores3", "root", "");
+            conexion = DriverManager.getConnection("jdbc:mysql://"+servidor+":"+puerto+"/"+base, usuario, password);
             JasperReport report = (JasperReport)
                     JRLoader.loadObject(this.getClass().getClassLoader().getResourceAsStream(dato));
             JasperPrint jasperPrint;
@@ -380,7 +387,7 @@ public class Ventana {
         Connection conexion = null;
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-            conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestiontrabajadores3", "root", "");
+            conexion = DriverManager.getConnection("jdbc:mysql://"+servidor+":"+puerto+"/"+base, usuario, password);
             JasperReport report = (JasperReport)
                     JRLoader.loadObject(this.getClass().getClassLoader().getResourceAsStream(dato));
             JasperPrint jasperPrint;
@@ -529,26 +536,24 @@ public class Ventana {
         tfDesde.setText(Fecha.formatFecha(jc_calendario.getDate()));
         String fecha = Fecha.formatFecha(jc_calendario.getDate());
 
-        DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         try {
             fechaDesde2 = df.parse(fecha);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
     }
 
     private void rellenarHasta() {
         tfHasta.setText(Fecha.formatFecha(jc_calendario.getDate()));
         String fecha = Fecha.formatFecha(jc_calendario.getDate());
 
-        DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         try {
             fechaHasta2 = df.parse(fecha);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
     }
 
     private Map map2() {
@@ -562,6 +567,27 @@ public class Ventana {
         URL iconURL = getClass().getResource("/images/banana-icon.png");
         ImageIcon icon = new ImageIcon(iconURL);
      return icon;
+    }
+
+    private void propiedades(){
+        Properties propiedades = new Properties();
+        InputStream entrada = null;
+
+        try {
+            entrada = new FileInputStream("preferencias.properties");
+            propiedades.load(entrada);
+
+            servidor=propiedades.getProperty("servidor");
+            puerto=propiedades.getProperty("puerto");
+            base=propiedades.getProperty("base");
+            usuario=propiedades.getProperty("usuario");
+            password=propiedades.getProperty("password");
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
 

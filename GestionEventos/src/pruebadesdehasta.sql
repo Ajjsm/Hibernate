@@ -1,18 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportGestionDiario2" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="774" leftMargin="34" rightMargin="34" topMargin="34" bottomMargin="34" uuid="1c73efbe-f84d-4d1f-a6ec-5f74485316d2">
-	<property name="ireport.zoom" value="1.5"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f224ec12-d70d-409a-873e-0fb139e018d1">
+	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true" pdfFontName="Times-Bold"/>
-	<style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18"/>
-	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
-	<style name="Detail" fontName="Arial" fontSize="12"/>
-	<style name="Row" mode="Transparent">
-		<conditionalStyle>
-			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
-			<style backcolor="#E6DAC3"/>
-		</conditionalStyle>
-	</style>
 	<style name="Crosstab Data Text" hAlign="Center"/>
 	<parameter name="fechaInicio" class="java.util.Date">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -36,11 +26,7 @@ FROM
      `tareas` tareas INNER JOIN `evento` evento ON tareas.`id_tarea` = evento.`id_tarea`
      INNER JOIN `trabajadores` trabajadores ON evento.`id_trabajador` = trabajadores.`id_trabajador`
 
-WHERE
-     fecha BETWEEN $P{fechaInicio} and $P{fechaFinal}
-
-ORDER BY
-     fecha ASC]]>
+WHERE fecha BETWEEN $P{fechaInicio} and $P{fechaFinal}]]>
 	</queryString>
 	<field name="evento_id" class="java.lang.Integer"/>
 	<field name="evento_fecha" class="java.sql.Date"/>
@@ -52,43 +38,34 @@ ORDER BY
 	<field name="trabajadores_id_trabajador" class="java.lang.Integer"/>
 	<field name="trabajadores_nombre" class="java.lang.String"/>
 	<field name="trabajadores_correo" class="java.lang.String"/>
-	<group name="evento_fecha">
-		<groupExpression><![CDATA[$F{evento_fecha}]]></groupExpression>
-		<groupHeader>
-			<band/>
-		</groupHeader>
-		<groupFooter>
-			<band/>
-		</groupFooter>
-	</group>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band splitType="Stretch"/>
+		<band height="79" splitType="Stretch"/>
 	</title>
 	<pageHeader>
-		<band height="25" splitType="Stretch"/>
+		<band height="35" splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
-		<band splitType="Stretch"/>
+		<band height="61" splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band splitType="Stretch"/>
+		<band height="125" splitType="Stretch"/>
 	</detail>
 	<columnFooter>
-		<band splitType="Stretch"/>
+		<band height="45" splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band splitType="Stretch"/>
+		<band height="54" splitType="Stretch"/>
 	</pageFooter>
 	<summary>
-		<band height="82" splitType="Stretch">
+		<band height="42" splitType="Stretch">
 			<crosstab>
-				<reportElement x="0" y="0" width="774" height="82" uuid="12af4cd0-85d0-4b96-a438-7d778334080b"/>
-				<rowGroup name="tareas_nombre" width="70" totalPosition="End">
+				<reportElement x="0" y="0" width="802" height="42" uuid="e2b4cf47-2062-4673-b455-c9e90fa7597f"/>
+				<rowGroup name="trabajadores_nombre" width="70" totalPosition="End">
 					<bucket class="java.lang.String">
-						<bucketExpression><![CDATA[$F{tareas_nombre}]]></bucketExpression>
+						<bucketExpression><![CDATA[$F{trabajadores_nombre}]]></bucketExpression>
 					</bucket>
 					<crosstabRowHeader>
 						<cellContents backcolor="#F5F5DC" mode="Opaque">
@@ -96,8 +73,8 @@ ORDER BY
 								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textField>
-								<reportElement style="Crosstab Data Text" x="0" y="0" width="70" height="25" uuid="1ca2d2d9-1d34-499b-8d72-8eee11bb7aff"/>
-								<textFieldExpression><![CDATA[$V{tareas_nombre}]]></textFieldExpression>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="70" height="25" uuid="ed33faef-353a-4f91-b84c-ec4680465375"/>
+								<textFieldExpression><![CDATA[$V{trabajadores_nombre}]]></textFieldExpression>
 							</textField>
 						</cellContents>
 					</crosstabRowHeader>
@@ -107,16 +84,16 @@ ORDER BY
 								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<staticText>
-								<reportElement x="0" y="0" width="70" height="25" uuid="8195ce45-d8e4-4cb1-95c8-cf56042ccc45"/>
+								<reportElement x="0" y="0" width="70" height="25" uuid="da3b2dbd-526b-454a-a0b8-bd36d475d08a"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<text><![CDATA[Total tareas_nombre]]></text>
+								<text><![CDATA[Total trabajadores_nombre]]></text>
 							</staticText>
 						</cellContents>
 					</crosstabTotalRowHeader>
 				</rowGroup>
-				<columnGroup name="trabajadores_nombre" height="30" totalPosition="End">
+				<columnGroup name="tareas_nombre" height="30" totalPosition="End">
 					<bucket class="java.lang.String">
-						<bucketExpression><![CDATA[$F{trabajadores_nombre}]]></bucketExpression>
+						<bucketExpression><![CDATA[$F{tareas_nombre}]]></bucketExpression>
 					</bucket>
 					<crosstabColumnHeader>
 						<cellContents backcolor="#F5F5DC" mode="Opaque">
@@ -124,8 +101,8 @@ ORDER BY
 								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textField>
-								<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="30" uuid="f76c37d3-2ed5-47cf-a930-614b7cfa08b3"/>
-								<textFieldExpression><![CDATA[$V{trabajadores_nombre}]]></textFieldExpression>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="30" uuid="083a0f48-53ed-4c56-bf3d-9aef8fdee643"/>
+								<textFieldExpression><![CDATA[$V{tareas_nombre}]]></textFieldExpression>
 							</textField>
 						</cellContents>
 					</crosstabColumnHeader>
@@ -135,9 +112,9 @@ ORDER BY
 								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<staticText>
-								<reportElement x="0" y="0" width="50" height="30" uuid="b3084c92-ef0e-4dca-ac14-00fb8b784a9f"/>
+								<reportElement x="0" y="0" width="50" height="30" uuid="191ef996-b5f2-4bfb-a646-df055ccea0a9"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<text><![CDATA[Total trabajadores_nombre]]></text>
+								<text><![CDATA[Total tareas_nombre]]></text>
 							</staticText>
 						</cellContents>
 					</crosstabTotalColumnHeader>
@@ -151,40 +128,40 @@ ORDER BY
 							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						</box>
 						<textField>
-							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" uuid="96b76e6a-8375-489f-bd33-6df2370ea6e4"/>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" uuid="81912534-9b51-46ae-8f89-433374d37f93"/>
 							<textFieldExpression><![CDATA[$V{tareas_nombreMeasure}]]></textFieldExpression>
 						</textField>
 					</cellContents>
 				</crosstabCell>
-				<crosstabCell height="25" rowTotalGroup="tareas_nombre">
+				<crosstabCell height="25" rowTotalGroup="trabajadores_nombre">
 					<cellContents backcolor="#FFFFBF" mode="Opaque">
 						<box>
 							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						</box>
 						<textField>
-							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" uuid="4f780862-3464-450f-b509-42cb07580da8"/>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" uuid="bb38dbef-f0e0-441e-a65a-7096013507c4"/>
 							<textFieldExpression><![CDATA[$V{tareas_nombreMeasure}]]></textFieldExpression>
 						</textField>
 					</cellContents>
 				</crosstabCell>
-				<crosstabCell width="50" columnTotalGroup="trabajadores_nombre">
+				<crosstabCell width="50" columnTotalGroup="tareas_nombre">
 					<cellContents backcolor="#FFFFBF" mode="Opaque">
 						<box>
 							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						</box>
 						<textField>
-							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" uuid="d311c533-a5d0-4d96-b269-c4c1edd355a6"/>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" uuid="ca490340-db7b-42c3-a975-338de56bb2d3"/>
 							<textFieldExpression><![CDATA[$V{tareas_nombreMeasure}]]></textFieldExpression>
 						</textField>
 					</cellContents>
 				</crosstabCell>
-				<crosstabCell rowTotalGroup="tareas_nombre" columnTotalGroup="trabajadores_nombre">
+				<crosstabCell rowTotalGroup="trabajadores_nombre" columnTotalGroup="tareas_nombre">
 					<cellContents backcolor="#FFFFBF" mode="Opaque">
 						<box>
 							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						</box>
 						<textField>
-							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" uuid="f774a0e9-29f1-4e27-a710-aed66686b8f2"/>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" uuid="186a9750-aa63-4ae9-b60f-2619fe53cd99"/>
 							<textFieldExpression><![CDATA[$V{tareas_nombreMeasure}]]></textFieldExpression>
 						</textField>
 					</cellContents>
