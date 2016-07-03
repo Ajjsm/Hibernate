@@ -97,6 +97,7 @@ public class RellenarTrabajador extends JFrame{
         frame.pack();
         frame.setTitle("Agregar nuevo trabajador");
         frame.setLocationRelativeTo(null);
+        frame.setResizable(false);
     }
 
     public void visible(){

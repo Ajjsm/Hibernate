@@ -31,7 +31,9 @@
     <constraints>
       <xy x="20" y="20" width="828" height="413"/>
     </constraints>
-    <properties/>
+    <properties>
+      <background color="-3276809"/>
+    </properties>
     <border type="none"/>
     <children>
       <component id="f7784" class="javax.swing.JLabel">

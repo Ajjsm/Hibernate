@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pruebaasta" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9b7ff7ee-d233-4bcb-974b-d805f158b529">
-	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="3.797498335832415"/>
+	<property name="ireport.x" value="41"/>
 	<property name="ireport.y" value="0"/>
 	<style name="Crosstab Data Text" hAlign="Center"/>
 	<parameter name="fechaInicio" class="java.util.Date">
@@ -43,7 +43,24 @@ WHERE
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band splitType="Stretch"/>
+		<band height="31" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="32" y="0" width="60" height="20" uuid="77373351-9270-4eda-a394-3eb15b8f09c8"/>
+				<textFieldExpression><![CDATA[$P{fechaInicio}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="106" y="0" width="59" height="20" uuid="2473405e-67d9-4a94-a63a-58bc27c9564e"/>
+				<textFieldExpression><![CDATA[$P{fechaFinal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="92" y="0" width="14" height="20" uuid="bd26cde7-96c5-4c18-9144-ba186a1d46fa"/>
+				<text><![CDATA[al]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="13" y="0" width="19" height="20" uuid="b9d6953b-7a78-4a13-a16a-46edee30bcdf"/>
+				<text><![CDATA[Del]]></text>
+			</staticText>
+		</band>
 	</title>
 	<pageHeader>
 		<band splitType="Stretch"/>

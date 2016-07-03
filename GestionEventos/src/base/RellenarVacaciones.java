@@ -28,6 +28,7 @@ public class RellenarVacaciones {
         frame.setTitle("Agregar nuevo dia festivo");
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+        frame.setResizable(false);
 
         operations = new Operations();
         operations.conectar();
@@ -46,7 +47,9 @@ public class RellenarVacaciones {
                 operations.guardarVacaciones(vacaciones);
                 JOptionPane.showMessageDialog(null, "Vacaciones almacenadas correctamente");
                 frame.setVisible(false);
+
             }
+
         });
 
         bt_cancelar.addActionListener(new ActionListener() {

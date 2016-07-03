@@ -3,8 +3,10 @@ package ventana;
 
 import base.*;
 import com.jgoodies.forms.layout.FormLayout;
+import com.toedter.calendar.IDateEvaluator;
 import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDayChooser;
+import com.toedter.calendar.MinMaxDateEvaluator;
 import hibernate.Operations;
 import hibernate.Util;
 import net.sf.jasperreports.engine.*;
@@ -15,6 +17,7 @@ import net.sf.jasperreports.engine.util.*;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import util.Fecha;
+import util.MarcarFechas;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -34,6 +37,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.List;
 
 
 /**
@@ -42,10 +46,6 @@ import java.util.*;
 public class Ventana {
 
     //FIXME Crear boton verde y rojo para saber si estas conectado
-    //FIXME Pasar a los combos la seleccion de la lista de eventos
-    //FIXME Añadir funciones para eliminar eventos y vacaciones
-    //FIXME Si un evento se repite en fecha, tarea y trabajador, se actualiza, no se inserta uno nuevo
-
 
     private JPanel panel1;
     private JComboBox cbTrabajador;
@@ -115,9 +115,9 @@ public class Ventana {
     private DefaultListModel dtm_listaEventos;
     private DefaultListModel dtm_listaVacaciones;
 
-    public Ventana() throws InterruptedException {
-        jc_calendario.setBackground(new Color(196, 255, 188));
+    private List<Date> listaVacas = new ArrayList<>();
 
+    public Ventana() throws InterruptedException {
         JScrollPane scroll2 = new JScrollPane(panel1);
         JFrame frame = new JFrame();
         frame.add(scroll2);
@@ -139,7 +139,9 @@ public class Ventana {
 
         operations = new Operations();
         operations.conectar();
-
+        crearListaMarcas();
+        pintarJcalendar();
+        jc_calendario.setBackground(new Color(196, 255, 188));
         listarTodo();
 
         frame.setJMenuBar(getMenuBar());
@@ -150,6 +152,8 @@ public class Ventana {
             @Override
             public void actionPerformed(ActionEvent e) {
                 listaVacaciones();
+                crearListaMarcas();
+                pintarJcalendar();
             }
         });
 
@@ -277,7 +281,7 @@ public class Ventana {
             public void actionPerformed(ActionEvent e) {
                 int n = JOptionPane.showConfirmDialog(
                         null,
-                        "Estas apunto de eliminar el evento?",
+                        "Estas apunto de eliminar el evento",
                         "",
                         JOptionPane.YES_NO_OPTION);
 
@@ -294,7 +298,8 @@ public class Ventana {
             }
         });
 
-       propiedades();
+
+
     }
 
 
@@ -352,7 +357,7 @@ public class Ventana {
         Connection conexion = null;
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-            conexion = DriverManager.getConnection("jdbc:mysql://"+servidor+":"+puerto+"/"+base, usuario, password);
+            conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestiontrabajadores3", "root", "");
             JasperReport report = (JasperReport)
                     JRLoader.loadObject(this.getClass().getClassLoader().getResourceAsStream(dato));
             JasperPrint jasperPrint;
@@ -387,7 +392,7 @@ public class Ventana {
         Connection conexion = null;
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-            conexion = DriverManager.getConnection("jdbc:mysql://"+servidor+":"+puerto+"/"+base, usuario, password);
+            conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestiontrabajadores3", "root", "");
             JasperReport report = (JasperReport)
                     JRLoader.loadObject(this.getClass().getClassLoader().getResourceAsStream(dato));
             JasperPrint jasperPrint;
@@ -564,31 +569,24 @@ public class Ventana {
     }
 
     private ImageIcon icono(){
-        URL iconURL = getClass().getResource("/images/banana-icon.png");
+        URL iconURL = getClass().getResource("/images/Banana-icon.png");
         ImageIcon icon = new ImageIcon(iconURL);
      return icon;
     }
 
-    private void propiedades(){
-        Properties propiedades = new Properties();
-        InputStream entrada = null;
+    private void pintarJcalendar(){
+        jc_calendario.getDayChooser().addDateEvaluator(new MarcarFechas(listaVacas));
+        jc_calendario.setDate(jc_calendario.getDate());
 
-        try {
-            entrada = new FileInputStream("preferencias.properties");
-            propiedades.load(entrada);
+    }
 
-            servidor=propiedades.getProperty("servidor");
-            puerto=propiedades.getProperty("puerto");
-            base=propiedades.getProperty("base");
-            usuario=propiedades.getProperty("usuario");
-            password=propiedades.getProperty("password");
+    private void crearListaMarcas(){
+        for (int i = 0; i < operations.getVacaciones().size(); i++) {
+            listaVacas.add(operations.getVacaciones().get(i).getFecha());
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
+
 }
 
 

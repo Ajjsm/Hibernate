@@ -68,7 +68,8 @@
     </constraints>
     <properties>
       <autoscrolls value="false"/>
-      <background color="-1598"/>
+      <background color="-3276809"/>
+      <enabled value="true"/>
       <maximumSize width="2147483647" height="2147483647"/>
       <minimumSize width="900" height="1000"/>
       <opaque value="true"/>

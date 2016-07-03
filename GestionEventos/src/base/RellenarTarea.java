@@ -90,6 +90,8 @@ public class RellenarTarea extends JFrame{
         frame.pack();
         frame.setTitle("Agregar nueva tarea");
         frame.setLocationRelativeTo(null);
+        frame.setResizable(false);
+
     }
 
     public void visible(){
