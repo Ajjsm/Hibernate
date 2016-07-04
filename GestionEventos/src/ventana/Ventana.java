@@ -2,30 +2,20 @@ package ventana;
 
 
 import base.*;
-import com.jgoodies.forms.layout.FormLayout;
-import com.toedter.calendar.IDateEvaluator;
 import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDayChooser;
-import com.toedter.calendar.MinMaxDateEvaluator;
 import hibernate.Operations;
-import hibernate.Util;
 import net.sf.jasperreports.engine.*;
 
 import net.sf.jasperreports.engine.export.JRPdfExporter;
-import net.sf.jasperreports.engine.export.data.DateTextValue;
 import net.sf.jasperreports.engine.util.*;
-import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import util.Fecha;
 import util.MarcarFechas;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.*;
@@ -75,23 +65,24 @@ public class Ventana {
     private JButton btListarEventos;
     private JScrollPane jScrollPane;
     private net.sf.jasperreports.swing.JRViewer jRViewer;
-
     private Date fechaDesde2;
     private Date fechaHasta2;
-
     private JDayChooser jdc;
     private RellenarTrabajador rellenarTrabajador;
     private RellenarTarea rellenarTarea;
+    private String rutaHome;
 
     private JMenuBar menuBar;
     private JMenu menu;
     private JMenu menuAyuda;
+    private JMenu menuBackup;
 
     private JMenuItem menuItemAddTrabajador;
     private JMenuItem menuItemAddTarea;
     private JMenuItem menuItem3;
     private JMenuItem menuItem4;
-
+    private JMenuItem menuItemRutaBackup;
+    private JMenuItem menuItemCrearBackup;
     private JMenuItem menuItemInstrucciones;
     private JMenuItem menuItemVersion;
 
@@ -104,7 +95,6 @@ public class Ventana {
     private String puerto;
     private String servidor;
 
-
     private Trabajador trabajador;
     private Tarea tarea;
     private Evento evento;
@@ -114,6 +104,13 @@ public class Ventana {
 
     private DefaultListModel dtm_listaEventos;
     private DefaultListModel dtm_listaVacaciones;
+
+    //BACKUP
+    private String mysqlDump;
+    private String mysqlUSUARIO;
+    private String mysqlPASSWORD;
+    private String mysqlBD;
+    private String mysqlRUTA;
 
     private List<Date> listaVacas = new ArrayList<>();
 
@@ -139,9 +136,32 @@ public class Ventana {
 
         operations = new Operations();
         operations.conectar();
+
+        try {
+            Properties props = new Properties();
+            InputStream in = this.getClass().getClassLoader().getResourceAsStream("config/preferencias.properties");
+            props.load(in);
+
+            mysqlUSUARIO = props.getProperty("usuario");
+            mysqlPASSWORD = props.getProperty("password");
+            mysqlBD = props.getProperty("base");
+            mysqlRUTA = props.getProperty("rutaBackup");
+
+
+        } catch (FileNotFoundException e) {
+            System.out.println("No se encuentra el fichero");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
         crearListaMarcas();
         pintarJcalendar();
-        jc_calendario.setBackground(new Color(196, 255, 188));
+        jc_calendario.setBackground(new Color(0, 255, 188));
+        jc_calendario.setOpaque(true);
+        jc_calendario.setFont(new Font("Verdana", Font.BOLD, 12));
+        jc_calendario.setDecorationBackgroundColor(new Color(196, 255, 188));
+
         listarTodo();
 
         frame.setJMenuBar(getMenuBar());
@@ -242,9 +262,7 @@ public class Ventana {
         btCrearContar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                crearContar("pruebaasta.jasper");
-                System.out.println("Primera fecha - "+fechaDesde2);
-                System.out.println("Hasta fecha - "+fechaHasta2);
+                crearContar("pruebaasta.jasper");;
             }
         });
 
@@ -264,9 +282,9 @@ public class Ventana {
                         "",
                         JOptionPane.YES_NO_OPTION);
 
-                if(n == JOptionPane.YES_OPTION) {
+                if (n == JOptionPane.YES_OPTION) {
                     Vacaciones filaSeleccionada = (Vacaciones) listaVacaciones.getSelectedValue();
-                    if (filaSeleccionada!=null){
+                    if (filaSeleccionada != null) {
                         operations.eliminarVacacion(filaSeleccionada);
                         listaVacaciones();
                     } else {
@@ -281,27 +299,23 @@ public class Ventana {
             public void actionPerformed(ActionEvent e) {
                 int n = JOptionPane.showConfirmDialog(
                         null,
-                        "Estas apunto de eliminar el evento",
+                        "Se eliminara el evento",
                         "",
                         JOptionPane.YES_NO_OPTION);
 
-                if(n == JOptionPane.YES_OPTION) {
+                if (n == JOptionPane.YES_OPTION) {
                     Evento filaSeleccionada = (Evento) listaEventos.getSelectedValue();
-                    if(filaSeleccionada!=null){
+                    if (filaSeleccionada != null) {
                         operations.eliminarEvento(filaSeleccionada);
                         listaEventos();
-                    }
-                    else {
+                    } else {
                         JOptionPane.showMessageDialog(null, "No tienes ningun dato seleccionado");
                     }
                 }
             }
         });
 
-
-
     }
-
 
     private JMenuBar getMenuBar() {
         menuBar = new JMenuBar();
@@ -327,26 +341,29 @@ public class Ventana {
 
             }
         });
-        menuItem3 = new JMenuItem("Configuracion");
         menuItem4 = new JMenuItem("Salir");
+        menuItem4.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
 
         menu.add(menuItemAddTrabajador);
         menu.add(menuItemAddTarea);
-        menu.add(menuItem3);
         menu.add(menuItem4);
 
-        menuAyuda = new JMenu("Ayuda");
-        menuBar.add(menuAyuda);
-        menuItemInstrucciones = new JMenuItem("Instrucciones");
-        menuItemVersion = new JMenuItem("Ver version");
-        menuItemVersion.addActionListener(new ActionListener() {
+        menuBackup = new JMenu("Backup");
+        menuBar.add(menuBackup);
+        menuItemCrearBackup = new JMenuItem("Crear backup");
+        menuBackup.add(menuItemCrearBackup);
+        menuItemCrearBackup.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Version del programa 1.0.0");
+                crearBackup();
             }
         });
-        menuAyuda.add(menuItemVersion);
-        menuAyuda.add(menuItemInstrucciones);
+
 
         return menuBar;
     }
@@ -364,12 +381,6 @@ public class Ventana {
             jasperPrint = JasperFillManager.fillReport(report,
                     map(jc_calendario.getDate()), conexion);
 
-            JRExporter exporter = new JRPdfExporter();
-            exporter.setParameter(JRExporterParameter.JASPER_PRINT,
-                    jasperPrint);
-            exporter.setParameter(JRExporterParameter.OUTPUT_FILE, new
-                    File("backupInforme.pdf"));
-            exporter.exportReport();
             jRViewer = new net.sf.jasperreports.swing.JRViewer(jasperPrint);
             tabbedPane1.addTab("Informe", jRViewer);
 
@@ -384,10 +395,9 @@ public class Ventana {
         } catch (IllegalAccessException e1) {
             e1.printStackTrace();
         }
-
     }
 
-    private void crearContar(String dato){
+    private void crearContar(String dato) {
         tabbedPane1.removeAll();
         Connection conexion = null;
         try {
@@ -399,12 +409,6 @@ public class Ventana {
             jasperPrint = JasperFillManager.fillReport(report,
                     map2(), conexion);
 
-            JRExporter exporter = new JRPdfExporter();
-            exporter.setParameter(JRExporterParameter.JASPER_PRINT,
-                    jasperPrint);
-            exporter.setParameter(JRExporterParameter.OUTPUT_FILE, new
-                    File("backupInforme2.pdf"));
-            exporter.exportReport();
             jRViewer = new net.sf.jasperreports.swing.JRViewer(jasperPrint);
             tabbedPane1.addTab("Informe", jRViewer);
 
@@ -428,11 +432,9 @@ public class Ventana {
         tarea = (Tarea) cbTarea.getSelectedItem();
         trabajador = (Trabajador) cbTrabajador.getSelectedItem();
 
-        for (Evento eventos : operations.getEvento()){
+        for (Evento eventos : operations.getEvento()) {
 
-            if (trabajador.getId() == eventos.getTrabajador().getId() && (Fecha.formatFecha(fecha)).equalsIgnoreCase(Fecha.formatFecha(eventos.getFecha()))){
-                System.out.println("Comparar esta fecha " + Fecha.formatFecha(fecha));
-                System.out.println(" con esta " + Fecha.formatFecha(eventos.getFecha()));
+            if (trabajador.getId() == eventos.getTrabajador().getId() && (Fecha.formatFecha(fecha)).equalsIgnoreCase(Fecha.formatFecha(eventos.getFecha()))) {
                 JOptionPane.showMessageDialog(null, "Este trabajador ya tiene esta fecha asignada");
                 return;
             }
@@ -441,10 +443,8 @@ public class Ventana {
         evento.setTrabajador(trabajador);
         evento.setFecha(fecha);
         operations.guardarEvento(evento);
-
         JOptionPane.showMessageDialog(null, "Evento insertado correctamente");
-
-        listarTodo();
+        listaEventos();
 
     }
 
@@ -568,22 +568,62 @@ public class Ventana {
         return parametros;
     }
 
-    private ImageIcon icono(){
-        URL iconURL = getClass().getResource("/images/Banana-icon.png");
+    private ImageIcon icono() {
+        URL iconURL = getClass().getResource("/images/task3.png");
         ImageIcon icon = new ImageIcon(iconURL);
-     return icon;
+        return icon;
     }
 
-    private void pintarJcalendar(){
+    private void pintarJcalendar() {
         jc_calendario.getDayChooser().addDateEvaluator(new MarcarFechas(listaVacas));
         jc_calendario.setDate(jc_calendario.getDate());
 
     }
 
-    private void crearListaMarcas(){
+    private void crearListaMarcas() {
         for (int i = 0; i < operations.getVacaciones().size(); i++) {
             listaVacas.add(operations.getVacaciones().get(i).getFecha());
 
+        }
+    }
+
+    private void crearBackup() {
+        File fileToSave = null;
+
+        String dbUser = mysqlUSUARIO;
+        String dbPass = mysqlPASSWORD;
+        String dbName = mysqlBD;
+
+        JFrame parentFrame = new JFrame();
+
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Elige la ruta donde guardar el backup");
+
+        int userSelection = fileChooser.showSaveDialog(parentFrame);
+
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            fileToSave = fileChooser.getSelectedFile();
+        } else {
+            return;
+        }
+
+        String executeCmd = "";
+        executeCmd ="C:/xampp/mysql/bin/mysqldump -u "+dbUser+ " "+dbName+" -r " +fileToSave+".sql";
+        System.out.println(executeCmd);
+
+        try {
+            Process runtimeProcess =Runtime.getRuntime().exec(executeCmd);
+            int processComplete = runtimeProcess.waitFor();
+            if(processComplete == 0){
+                JOptionPane.showMessageDialog(null, "Backup creado correctamente");
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al crear Backup");
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
